@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.groliks.cookingrecipes.databinding.FragmentRecipesListBinding
 import com.groliks.cookingrecipes.view.recipeslist.recyclerview.RecipesAdapter
 import kotlinx.coroutines.flow.collect
@@ -29,6 +30,8 @@ abstract class RecipesListFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        binding.recipes.layoutManager = LinearLayoutManager(requireContext())
+        binding.recipes.adapter = adapter
         viewLifecycleOwner.lifecycleScope.launchWhenStarted {
             viewModel.recipesList.collect { recipes ->
                 adapter.submitList(recipes)

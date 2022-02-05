@@ -13,4 +13,8 @@ class RecipesRepositoryImpl @Inject constructor(
     override fun getRecipes(dataSource: Int): Flow<List<Recipe>> {
         return localDataSource.getRecipes()
     }
+
+    override suspend fun addRecipe(recipe: Recipe): Long {
+        return localDataSource.addRecipe(recipe)
+    }
 }

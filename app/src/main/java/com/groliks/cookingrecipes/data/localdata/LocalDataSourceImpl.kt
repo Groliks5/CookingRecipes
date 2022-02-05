@@ -13,4 +13,8 @@ class LocalDataSourceImpl @Inject constructor(
     override fun getRecipes(): Flow<List<Recipe>> {
         return recipesDao.getRecipes()
     }
+
+    override suspend fun addRecipe(recipe: Recipe): Long {
+        return recipesDao.addRecipeInfo(recipe.info)
+    }
 }
