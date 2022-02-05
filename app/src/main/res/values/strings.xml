@@ -1,3 +1,19 @@
 <resources>
     <string name="app_name">CookingRecipes</string>
+
+    <!--Menu bottom-->
+    <string name="local_recipes">Local recipes</string>
+    <string name="remote_recipes">Remote recipes</string>
+    <string name="settings">Settings</string>
+
+    <!--Edit recipe-->
+    <string name="recipe_name">Recipe name</string>
+    <string name="recipe_photo">Recipe photo</string>
+    <string name="recipe_category">Recipe category</string>
+    <string name="ingredients">Ingredients</string>
+    <string name="recipe_description">Recipe description</string>
+    <string name="instruction">Instruction</string>
+
+    <!--Recipes list-->
+    <string name="add_recipe">Add recipe</string>
 </resources>

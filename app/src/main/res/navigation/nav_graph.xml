@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/local_recipes">
+
+    <fragment
+        android:id="@+id/editRecipeFragment"
+        android:name="com.groliks.cookingrecipes.view.editrecipe.EditRecipeFragment"
+        android:label="EditRecipeFragment">
+        <argument
+            android:name="recipeId"
+            app:argType="long" />
+    </fragment>
+    <fragment
+        android:id="@+id/localRecipeViewFragment"
+        android:name="com.groliks.cookingrecipes.view.localrecipeview.LocalRecipeViewFragment"
+        android:label="LocalRecipeViewFragment">
+        <action
+            android:id="@+id/action_localRecipeViewFragment_to_editRecipeFragment"
+            app:destination="@id/editRecipeFragment" />
+        <argument
+            android:name="recipeId"
+            app:argType="long" />
+    </fragment>
+    <fragment
+        android:id="@+id/local_recipes"
+        android:name="com.groliks.cookingrecipes.view.localrecipeslist.LocalRecipesListFragment"
+        android:label="LocalRecipesListFragment">
+        <action
+            android:id="@+id/action_localRecipesListFragment_to_localRecipeViewFragment"
+            app:destination="@id/localRecipeViewFragment" />
+        <action
+            android:id="@+id/action_localRecipesListFragment_to_editRecipeFragment"
+            app:destination="@id/editRecipeFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/remoteRecipeViewFragment"
+        android:name="com.groliks.cookingrecipes.view.remoterecipeview.RemoteRecipeViewFragment"
+        android:label="RemoteRecipeViewFragment">
+        <action
+            android:id="@+id/action_remoteRecipeViewFragment_to_localRecipeViewFragment"
+            app:destination="@id/localRecipeViewFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/remote_recipes"
+        android:name="com.groliks.cookingrecipes.view.remoterecipeslist.RemoteRecipesListFragment"
+        android:label="RemoteRecipesListFragment">
+        <action
+            android:id="@+id/action_remoteRecipesListFragment_to_remoteRecipeViewFragment"
+            app:destination="@id/remoteRecipeViewFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/settings"
+        android:name="com.groliks.cookingrecipes.view.settings.SettingsFragment"
+        android:label="SettingsFragment" />
+</navigation>
