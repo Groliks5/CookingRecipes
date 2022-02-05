@@ -1,6 +1,8 @@
 package com.groliks.cookingrecipes.data.localdata
 
-import javax.inject.Singleton
+import com.groliks.cookingrecipes.data.model.Recipe
+import kotlinx.coroutines.flow.Flow
 
-@Singleton
-class LocalDataSource
+interface LocalDataSource {
+    fun getRecipes(): Flow<List<Recipe>>
+}

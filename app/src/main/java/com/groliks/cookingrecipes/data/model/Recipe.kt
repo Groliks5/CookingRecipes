@@ -1,4 +1,4 @@
-package com.groliks.cookingrecipes.data.localdata.model
+package com.groliks.cookingrecipes.data.model
 
 import androidx.room.Embedded
 import androidx.room.Relation

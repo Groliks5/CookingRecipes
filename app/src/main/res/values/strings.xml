@@ -16,4 +16,7 @@
 
     <!--Recipes list-->
     <string name="add_recipe">Add recipe</string>
+    <string name="edit_recipe">Edit recipe</string>
+    <string name="delete_recipe">delete_recipe</string>
+    <string name="favourite_recipe">favourite_recipe</string>
 </resources>

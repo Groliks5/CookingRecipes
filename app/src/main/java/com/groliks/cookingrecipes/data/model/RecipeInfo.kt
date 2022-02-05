@@ -1,4 +1,4 @@
-package com.groliks.cookingrecipes.data.localdata.model
+package com.groliks.cookingrecipes.data.model
 
 import android.graphics.Bitmap
 import androidx.room.Entity

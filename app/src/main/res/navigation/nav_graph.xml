@@ -26,12 +26,12 @@
     <fragment
         android:id="@+id/local_recipes"
         android:name="com.groliks.cookingrecipes.view.localrecipeslist.LocalRecipesListFragment"
-        android:label="LocalRecipesListFragment">
+        android:label="LocalRecipesList">
         <action
-            android:id="@+id/action_localRecipesListFragment_to_localRecipeViewFragment"
+            android:id="@+id/view_recipe"
             app:destination="@id/localRecipeViewFragment" />
         <action
-            android:id="@+id/action_localRecipesListFragment_to_editRecipeFragment"
+            android:id="@+id/edit_recipe"
             app:destination="@id/editRecipeFragment" />
     </fragment>
     <fragment
