@@ -16,10 +16,14 @@ import androidx.room.PrimaryKey
 )
 data class Ingredient(
     @PrimaryKey(autoGenerate = true)
-    var id: Long = 0,
+    var id: Long = NEW_INGREDIENT_ID,
     @ColumnInfo(name = "recipe_id")
     var recipeId: Long,
     var position: Int,
     var name: String = "",
     var measure: String = "",
-)
+) {
+    companion object {
+        const val NEW_INGREDIENT_ID = 0L
+    }
+}

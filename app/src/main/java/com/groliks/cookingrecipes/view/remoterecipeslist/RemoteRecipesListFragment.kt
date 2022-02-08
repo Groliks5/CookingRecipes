@@ -5,7 +5,7 @@ import android.view.View
 import androidx.core.view.isGone
 import com.groliks.cookingrecipes.view.recipeslist.RecipesListFragment
 import com.groliks.cookingrecipes.view.recipeslist.RecipesListViewModel
-import com.groliks.cookingrecipes.view.recipeslist.recyclerview.RecipesAdapter
+import com.groliks.cookingrecipes.view.recipeslist.recipeslist.RecipesAdapter
 
 class RemoteRecipesListFragment : RecipesListFragment() {
     override val viewModel: RecipesListViewModel

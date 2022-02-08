@@ -1,4 +1,4 @@
-package com.groliks.cookingrecipes.view.recipeslist.recyclerview
+package com.groliks.cookingrecipes.view.recipeslist.recipeslist
 
 import androidx.recyclerview.widget.DiffUtil
 import com.groliks.cookingrecipes.data.model.Recipe

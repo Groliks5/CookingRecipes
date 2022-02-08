@@ -1,6 +1,7 @@
 package com.groliks.cookingrecipes.di
 
 import android.content.Context
+import com.groliks.cookingrecipes.view.editrecipe.EditRecipeFragment
 import com.groliks.cookingrecipes.view.localrecipeslist.LocalRecipesListFragment
 import dagger.BindsInstance
 import dagger.Component
@@ -18,4 +19,5 @@ interface AppComponent {
     }
 
     fun inject(fragment: LocalRecipesListFragment)
+    fun inject(fragment: EditRecipeFragment)
 }

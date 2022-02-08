@@ -6,6 +6,8 @@ import kotlinx.coroutines.flow.Flow
 interface RecipesRepository {
     fun getRecipes(dataSource: Int): Flow<List<Recipe>>
     suspend fun addRecipe(recipe: Recipe): Long
+    suspend fun getRecipe(dataSource: Int, recipeId: Long): Recipe
+    suspend fun updateRecipe(recipe: Recipe)
 
     companion object {
         const val LOCAL_DATA_SOURCE = 0

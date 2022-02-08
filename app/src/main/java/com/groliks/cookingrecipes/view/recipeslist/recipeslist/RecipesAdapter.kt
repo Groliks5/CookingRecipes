@@ -1,4 +1,4 @@
-package com.groliks.cookingrecipes.view.recipeslist.recyclerview
+package com.groliks.cookingrecipes.view.recipeslist.recipeslist
 
 import android.view.View
 import androidx.recyclerview.widget.ListAdapter

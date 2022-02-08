@@ -15,6 +15,14 @@ class LocalDataSourceImpl @Inject constructor(
     }
 
     override suspend fun addRecipe(recipe: Recipe): Long {
-        return recipesDao.addRecipeInfo(recipe.info)
+        return recipesDao.addRecipe(recipe)
+    }
+
+    override suspend fun getRecipe(recipeId: Long): Recipe {
+        return recipesDao.getRecipe(recipeId)
+    }
+
+    override suspend fun updateRecipe(recipe: Recipe) {
+        recipesDao.updateRecipe(recipe)
     }
 }

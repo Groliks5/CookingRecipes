@@ -1,4 +1,4 @@
-package com.groliks.cookingrecipes.view.localrecipeslist.recyclerview
+package com.groliks.cookingrecipes.view.localrecipeslist.recipeslist
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -7,7 +7,7 @@ import coil.load
 import com.groliks.cookingrecipes.data.model.Recipe
 import com.groliks.cookingrecipes.databinding.ItemLocalRecipeBinding
 import com.groliks.cookingrecipes.view.localrecipeslist.LocalRecipesListFragmentDirections
-import com.groliks.cookingrecipes.view.recipeslist.recyclerview.RecipesAdapter
+import com.groliks.cookingrecipes.view.recipeslist.recipeslist.RecipesAdapter
 
 class LocalRecipesAdapter : RecipesAdapter() {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecipeViewHolder {

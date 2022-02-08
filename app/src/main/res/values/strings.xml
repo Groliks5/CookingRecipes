@@ -19,4 +19,9 @@
     <string name="edit_recipe">Edit recipe</string>
     <string name="delete_recipe">delete_recipe</string>
     <string name="favourite_recipe">favourite_recipe</string>
+    <string name="add_ingredient">Add ingredient</string>
+    <string name="enter_ingredient_name">Name</string>
+    <string name="ingredient_separator">-</string>
+    <string name="enter_ingredient_measure">Measure</string>
+    <string name="save_recipe">Save</string>
 </resources>

@@ -17,4 +17,12 @@ class RecipesRepositoryImpl @Inject constructor(
     override suspend fun addRecipe(recipe: Recipe): Long {
         return localDataSource.addRecipe(recipe)
     }
+
+    override suspend fun getRecipe(dataSource: Int, recipeId: Long): Recipe {
+        return localDataSource.getRecipe(recipeId)
+    }
+
+    override suspend fun updateRecipe(recipe: Recipe) {
+        localDataSource.updateRecipe(recipe)
+    }
 }
