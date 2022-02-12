@@ -5,12 +5,18 @@
     app:startDestination="@id/local_recipes">
 
     <fragment
-        android:id="@+id/editRecipeFragment"
+        android:id="@+id/edit_recipe"
         android:name="com.groliks.cookingrecipes.view.editrecipe.EditRecipeFragment"
         android:label="EditRecipeFragment">
         <argument
             android:name="recipeId"
             app:argType="long" />
+        <action
+            android:id="@+id/exit_without_saving"
+            app:destination="@id/exitWithoutSavingDialog" />
+        <action
+            android:id="@+id/save_recipe"
+            app:destination="@id/savingRecipeDialog" />
     </fragment>
     <fragment
         android:id="@+id/localRecipeViewFragment"
@@ -18,7 +24,7 @@
         android:label="LocalRecipeViewFragment">
         <action
             android:id="@+id/action_localRecipeViewFragment_to_editRecipeFragment"
-            app:destination="@id/editRecipeFragment" />
+            app:destination="@id/edit_recipe" />
         <argument
             android:name="recipeId"
             app:argType="long" />
@@ -32,7 +38,7 @@
             app:destination="@id/localRecipeViewFragment" />
         <action
             android:id="@+id/edit_recipe"
-            app:destination="@id/editRecipeFragment" />
+            app:destination="@id/edit_recipe" />
     </fragment>
     <fragment
         android:id="@+id/remoteRecipeViewFragment"
@@ -54,4 +60,12 @@
         android:id="@+id/settings"
         android:name="com.groliks.cookingrecipes.view.settings.SettingsFragment"
         android:label="SettingsFragment" />
+    <dialog
+        android:id="@+id/exitWithoutSavingDialog"
+        android:name="com.groliks.cookingrecipes.view.editrecipe.dialogs.ExitWithoutSavingDialog"
+        android:label="ExitWithoutSavingDialog" />
+    <dialog
+        android:id="@+id/savingRecipeDialog"
+        android:name="com.groliks.cookingrecipes.view.editrecipe.dialogs.SavingRecipeDialog"
+        android:label="SavingRecipeDialog" />
 </navigation>

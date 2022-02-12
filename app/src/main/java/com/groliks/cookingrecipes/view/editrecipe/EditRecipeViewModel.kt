@@ -9,7 +9,11 @@ import com.groliks.cookingrecipes.data.repositories.RecipesRepository
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.channels.BufferOverflow
+import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 
@@ -17,19 +21,22 @@ class EditRecipeViewModel(private val repository: RecipesRepository, private val
     ViewModel() {
     private val _recipe = MutableStateFlow<Recipe?>(null)
     val recipe = _recipe.asStateFlow()
-    private var isRecipeUpdated = false
+    var isRecipeUpdated = false
+        private set
     var isRecipeEditable = false
         private set
 
+    private val _isSaveFinished =
+        MutableSharedFlow<Boolean>(replay = 1, onBufferOverflow = BufferOverflow.DROP_OLDEST)
+    val isSaveFinished = _isSaveFinished.asSharedFlow()
+
+    private var savingJob: Job? = null
+
     init {
         viewModelScope.launch {
-            loadRecipe()
+            val recipe = repository.getRecipe(RecipesRepository.LOCAL_DATA_SOURCE, recipeId)
+            _recipe.emit(recipe)
         }
-    }
-
-    private suspend fun loadRecipe() {
-        val recipe = repository.getRecipe(RecipesRepository.LOCAL_DATA_SOURCE, recipeId)
-        _recipe.emit(recipe)
     }
 
     fun setRecipeEditable() {
@@ -77,16 +84,20 @@ class EditRecipeViewModel(private val repository: RecipesRepository, private val
     }
 
     fun saveRecipe() {
-        if (isRecipeUpdated) {
-            recipe.value?.also { recipe ->
-                viewModelScope.launch {
-                    isRecipeEditable = false
-                    repository.updateRecipe(recipe)
-                    loadRecipe()
-                    isRecipeUpdated = false
-                }
+        recipe.value?.also { recipe ->
+            savingJob = viewModelScope.launch {
+                isRecipeEditable = false
+                repository.updateRecipe(recipe)
+                isRecipeUpdated = false
+                _isSaveFinished.emit(true)
             }
         }
+    }
+
+    fun cancelSaving() {
+        savingJob?.cancel()
+        savingJob = null
+        isRecipeEditable = true
     }
 }
 

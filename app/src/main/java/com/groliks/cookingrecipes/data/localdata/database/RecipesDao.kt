@@ -16,7 +16,7 @@ abstract class RecipesDao {
     protected abstract suspend fun addRecipeInfo(recipeInfo: RecipeInfo): Long
 
     @Insert
-    protected abstract suspend fun addIngredients(ingredients: List<Ingredient>)
+    protected abstract suspend fun addIngredients(ingredients: List<Ingredient>): List<Long>
 
     @Transaction
     open suspend fun addRecipe(recipe: Recipe): Long {
@@ -43,6 +43,9 @@ abstract class RecipesDao {
         updateRecipeInfo(recipe.info)
         val (newIngredients, oldIngredients) = recipe.ingredients.partition { it.id == Ingredient.NEW_INGREDIENT_ID }
         updateIngredients(oldIngredients)
-        addIngredients(newIngredients)
+        val newIngredientsIds = addIngredients(newIngredients)
+        for (i in newIngredients.indices) {
+            newIngredients[i].id = newIngredientsIds[i]
+        }
     }
 }

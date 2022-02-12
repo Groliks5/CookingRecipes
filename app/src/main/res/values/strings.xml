@@ -24,4 +24,9 @@
     <string name="ingredient_separator">-</string>
     <string name="enter_ingredient_measure">Measure</string>
     <string name="save_recipe">Save</string>
+    <string name="exit_confirmation">Are you sure you want to exit without saving?</string>
+    <string name="yes">yes</string>
+    <string name="no">no</string>
+    <string name="saving">saving…</string>
+    <string name="cancel">Cancel</string>
 </resources>

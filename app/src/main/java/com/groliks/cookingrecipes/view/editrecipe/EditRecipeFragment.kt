@@ -4,15 +4,20 @@ import android.content.Context
 import android.os.Bundle
 import android.view.*
 import android.widget.EditText
+import androidx.activity.addCallback
 import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.setFragmentResultListener
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.groliks.cookingrecipes.R
 import com.groliks.cookingrecipes.appComponent
 import com.groliks.cookingrecipes.databinding.FragmentEditRecipeBinding
+import com.groliks.cookingrecipes.view.editrecipe.dialogs.ExitWithoutSavingDialog
+import com.groliks.cookingrecipes.view.editrecipe.dialogs.SavingRecipeDialog
 import com.groliks.cookingrecipes.view.editrecipe.ingredientslist.IngredientsAdapter
 import kotlinx.coroutines.flow.collect
 import javax.inject.Inject
@@ -39,8 +44,28 @@ class EditRecipeFragment : Fragment() {
         _binding = FragmentEditRecipeBinding.inflate(inflater, container, false)
 
         setHasOptionsMenu(true)
+        requireActivity().onBackPressedDispatcher.addCallback(this) {
+            onBackButtonPressed()
+        }
+        setupFragmentResultListeners()
 
         return binding.root
+    }
+
+    private fun setupFragmentResultListeners() {
+        setFragmentResultListener(SavingRecipeDialog.RESULT_KEY) { _, bundle ->
+            val result = bundle.getString(SavingRecipeDialog.SAVING_RESULT_KEY)
+            if (result == SavingRecipeDialog.CANCEL_SAVING) {
+                viewModel.cancelSaving()
+            }
+        }
+
+        setFragmentResultListener(ExitWithoutSavingDialog.RESULT_KEY) { _, bundle ->
+            val result = bundle.getString(ExitWithoutSavingDialog.EXIT_RESULT_KEY)
+            if (result == ExitWithoutSavingDialog.EXIT_CONFIRMATION) {
+                findNavController().popBackStack()
+            }
+        }
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -71,6 +96,14 @@ class EditRecipeFragment : Fragment() {
                 }
             }
         }
+
+        viewLifecycleOwner.lifecycleScope.launchWhenStarted {
+            viewModel.isSaveFinished.collect { isSaveFinished ->
+                if (isSaveFinished) {
+                    findNavController().popBackStack()
+                }
+            }
+        }
     }
 
     private fun EditText.doOnRecipeUpdate(callback: (String) -> Unit) {
@@ -89,10 +122,23 @@ class EditRecipeFragment : Fragment() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
             R.id.save_recipe -> {
-                viewModel.saveRecipe()
+                if (viewModel.isRecipeUpdated) {
+                    viewModel.saveRecipe()
+                    val action = EditRecipeFragmentDirections.saveRecipe()
+                    findNavController().navigate(action)
+                }
                 true
             }
             else -> super.onOptionsItemSelected(item)
+        }
+    }
+
+    private fun onBackButtonPressed() {
+        if (viewModel.isRecipeUpdated) {
+            val action = EditRecipeFragmentDirections.exitWithoutSaving()
+            findNavController().navigate(action)
+        } else {
+            findNavController().popBackStack()
         }
     }
 
