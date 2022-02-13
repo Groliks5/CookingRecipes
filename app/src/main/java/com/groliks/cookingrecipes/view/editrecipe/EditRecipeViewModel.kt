@@ -1,5 +1,7 @@
 package com.groliks.cookingrecipes.view.editrecipe
 
+import android.graphics.Bitmap
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
@@ -16,6 +18,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
+import java.io.IOException
 
 class EditRecipeViewModel(private val repository: RecipesRepository, private val recipeId: Long) :
     ViewModel() {
@@ -63,6 +66,11 @@ class EditRecipeViewModel(private val repository: RecipesRepository, private val
         isRecipeUpdated = true
     }
 
+    fun updateRecipePhoto(newPhoto: Bitmap) {
+        recipe.value?.apply { info.newPhoto = newPhoto }
+        isRecipeUpdated = true
+    }
+
     fun updateIngredientName(position: Int, newName: String) {
         recipe.value?.apply { ingredients[position].name = newName }
         isRecipeUpdated = true
@@ -87,7 +95,12 @@ class EditRecipeViewModel(private val repository: RecipesRepository, private val
         recipe.value?.also { recipe ->
             savingJob = viewModelScope.launch {
                 isRecipeEditable = false
-                repository.updateRecipe(recipe)
+                try {
+                    repository.updateRecipe(recipe)
+                } catch (exception: IOException) {
+                    Log.e("EditRecipeViewModel", exception.message.toString())
+                }
+                recipe.info.newPhoto = null
                 isRecipeUpdated = false
                 _isSaveFinished.emit(true)
             }

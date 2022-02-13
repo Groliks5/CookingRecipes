@@ -29,4 +29,10 @@
     <string name="no">no</string>
     <string name="saving">saving…</string>
     <string name="cancel">Cancel</string>
+    <string name="pick_from_gallery">Pick from gallery</string>
+    <string name="enter_uri">Enter uri</string>
+    <string name="ok">OK</string>
+    <string name="photo_preview">Photo preview</string>
+    <string name="photo_uri">Photo uri</string>
+    <string name="uri_not_found">Uri not found</string>
 </resources>

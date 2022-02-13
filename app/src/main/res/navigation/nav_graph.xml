@@ -17,6 +17,9 @@
         <action
             android:id="@+id/save_recipe"
             app:destination="@id/savingRecipeDialog" />
+        <action
+            android:id="@+id/choose_photo"
+            app:destination="@id/photoChoosingDialog" />
     </fragment>
     <fragment
         android:id="@+id/localRecipeViewFragment"
@@ -68,4 +71,27 @@
         android:id="@+id/savingRecipeDialog"
         android:name="com.groliks.cookingrecipes.view.editrecipe.dialogs.SavingRecipeDialog"
         android:label="SavingRecipeDialog" />
+    <dialog
+        android:id="@+id/photoChoosingDialog"
+        android:name="com.groliks.cookingrecipes.view.editrecipe.dialogs.PhotoChoosingDialog"
+        android:label="PhotoChoosingDialog">
+        <action
+            android:id="@+id/preview_photo"
+            app:destination="@id/photoPreviewDialog" />
+        <action
+            android:id="@+id/enter_uri"
+            app:destination="@id/enterPhotoUriDialog" />
+    </dialog>
+    <dialog
+        android:id="@+id/photoPreviewDialog"
+        android:name="com.groliks.cookingrecipes.view.editrecipe.dialogs.PhotoPreviewDialog"
+        android:label="PhotoPreviewDialog">
+        <argument
+            android:name="uri"
+            app:argType="string" />
+    </dialog>
+    <dialog
+        android:id="@+id/enterPhotoUriDialog"
+        android:name="com.groliks.cookingrecipes.view.editrecipe.dialogs.EnterPhotoUriDialog"
+        android:label="EnterPhotoUriDialog" />
 </navigation>

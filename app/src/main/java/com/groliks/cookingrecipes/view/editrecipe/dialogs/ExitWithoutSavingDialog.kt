@@ -7,7 +7,6 @@ import android.os.Bundle
 import androidx.core.os.bundleOf
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.setFragmentResult
-import androidx.navigation.fragment.findNavController
 import com.groliks.cookingrecipes.R
 
 class ExitWithoutSavingDialog : DialogFragment(), DialogInterface.OnClickListener {
@@ -21,19 +20,9 @@ class ExitWithoutSavingDialog : DialogFragment(), DialogInterface.OnClickListene
     }
 
     override fun onClick(dialog: DialogInterface?, which: Int) {
-        when (which) {
-            DialogInterface.BUTTON_POSITIVE -> onPositiveButtonClick()
-            else -> onNegativeButtonCLick()
+        if (which == DialogInterface.BUTTON_POSITIVE) {
+            setFragmentResult(RESULT_KEY, bundleOf(EXIT_RESULT_KEY to EXIT_CONFIRMATION))
         }
-    }
-
-    private fun onPositiveButtonClick() {
-        setFragmentResult(RESULT_KEY, bundleOf(EXIT_RESULT_KEY to EXIT_CONFIRMATION))
-        findNavController().popBackStack()
-    }
-
-    private fun onNegativeButtonCLick() {
-        findNavController().popBackStack()
     }
 
     companion object {

@@ -17,6 +17,4 @@ data class RecipeInfo(
     var isFavourite: Boolean = false,
     @Ignore
     var newPhoto: Bitmap? = null,
-    @Ignore
-    var isPhotoChanged: Boolean = false,
 )

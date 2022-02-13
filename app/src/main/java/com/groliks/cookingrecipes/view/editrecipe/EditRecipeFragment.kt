@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.*
 import android.widget.EditText
 import androidx.activity.addCallback
+import androidx.core.graphics.drawable.toBitmap
 import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.setFragmentResultListener
@@ -13,10 +14,14 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
+import coil.Coil
+import coil.load
+import coil.request.ImageRequest
 import com.groliks.cookingrecipes.R
 import com.groliks.cookingrecipes.appComponent
 import com.groliks.cookingrecipes.databinding.FragmentEditRecipeBinding
 import com.groliks.cookingrecipes.view.editrecipe.dialogs.ExitWithoutSavingDialog
+import com.groliks.cookingrecipes.view.editrecipe.dialogs.PhotoChoosingDialog
 import com.groliks.cookingrecipes.view.editrecipe.dialogs.SavingRecipeDialog
 import com.groliks.cookingrecipes.view.editrecipe.ingredientslist.IngredientsAdapter
 import kotlinx.coroutines.flow.collect
@@ -63,7 +68,22 @@ class EditRecipeFragment : Fragment() {
         setFragmentResultListener(ExitWithoutSavingDialog.RESULT_KEY) { _, bundle ->
             val result = bundle.getString(ExitWithoutSavingDialog.EXIT_RESULT_KEY)
             if (result == ExitWithoutSavingDialog.EXIT_CONFIRMATION) {
-                findNavController().popBackStack()
+                findNavController().popBackStack(R.id.edit_recipe, true)
+            }
+        }
+
+        setFragmentResultListener(PhotoChoosingDialog.PHOTO_CHOOSING_KEY) { _, bundle ->
+            val photoUri = bundle.getString(PhotoChoosingDialog.PHOTO_URI_KEY)
+            photoUri?.also { photoUri ->
+                val imageLoader = Coil.imageLoader(requireContext())
+                val imageRequest = ImageRequest.Builder(requireContext())
+                    .data(photoUri)
+                    .target { photo ->
+                        viewModel.updateRecipePhoto(photo.toBitmap())
+                        binding.recipePhoto.setImageDrawable(photo)
+                    }
+                    .build()
+                imageLoader.enqueue(imageRequest)
             }
         }
     }
@@ -76,6 +96,10 @@ class EditRecipeFragment : Fragment() {
         binding.recipeDescription.doOnRecipeUpdate(viewModel::updateRecipeDescription)
         binding.recipeCategory.doOnRecipeUpdate(viewModel::updateRecipeCategory)
         binding.recipeInstruction.doOnRecipeUpdate(viewModel::updateRecipeInstruction)
+        binding.recipePhoto.setOnClickListener {
+            val action = EditRecipeFragmentDirections.choosePhoto()
+            findNavController().navigate(action)
+        }
 
         viewLifecycleOwner.lifecycleScope.launchWhenStarted {
             viewModel.recipe.collect {
@@ -91,6 +115,9 @@ class EditRecipeFragment : Fragment() {
                         viewModel::addIngredient
                     )
                     binding.ingredients.adapter = adapter
+                    if (recipe.info.photoUri.isNotBlank()) {
+                        binding.recipePhoto.load(recipe.info.photoUri)
+                    }
 
                     viewModel.setRecipeEditable()
                 }
