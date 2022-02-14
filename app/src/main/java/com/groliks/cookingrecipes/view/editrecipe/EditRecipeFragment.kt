@@ -13,6 +13,7 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
+import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import coil.Coil
 import coil.load
@@ -23,6 +24,7 @@ import com.groliks.cookingrecipes.databinding.FragmentEditRecipeBinding
 import com.groliks.cookingrecipes.view.editrecipe.dialogs.ExitWithoutSavingDialog
 import com.groliks.cookingrecipes.view.editrecipe.dialogs.PhotoChoosingDialog
 import com.groliks.cookingrecipes.view.editrecipe.dialogs.SavingRecipeDialog
+import com.groliks.cookingrecipes.view.editrecipe.ingredientslist.IngredientTouchHelper
 import com.groliks.cookingrecipes.view.editrecipe.ingredientslist.IngredientsAdapter
 import kotlinx.coroutines.flow.collect
 import javax.inject.Inject
@@ -73,8 +75,8 @@ class EditRecipeFragment : Fragment() {
         }
 
         setFragmentResultListener(PhotoChoosingDialog.PHOTO_CHOOSING_KEY) { _, bundle ->
-            val photoUri = bundle.getString(PhotoChoosingDialog.PHOTO_URI_KEY)
-            photoUri?.also { photoUri ->
+            val photoUriResult = bundle.getString(PhotoChoosingDialog.PHOTO_URI_KEY)
+            photoUriResult?.also { photoUri ->
                 val imageLoader = Coil.imageLoader(requireContext())
                 val imageRequest = ImageRequest.Builder(requireContext())
                     .data(photoUri)
@@ -91,7 +93,19 @@ class EditRecipeFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        binding.ingredients.layoutManager = LinearLayoutManager(requireContext())
+        setupIngredientsRecyclerView()
+        setupRecipeInfoView()
+
+        viewLifecycleOwner.lifecycleScope.launchWhenStarted {
+            viewModel.isSaveFinished.collect { isSaveFinished ->
+                if (isSaveFinished) {
+                    findNavController().popBackStack(R.id.edit_recipe, false)
+                }
+            }
+        }
+    }
+
+    private fun setupRecipeInfoView() {
         binding.recipeName.doOnRecipeUpdate(viewModel::updateRecipeName)
         binding.recipeDescription.doOnRecipeUpdate(viewModel::updateRecipeDescription)
         binding.recipeCategory.doOnRecipeUpdate(viewModel::updateRecipeCategory)
@@ -102,32 +116,41 @@ class EditRecipeFragment : Fragment() {
         }
 
         viewLifecycleOwner.lifecycleScope.launchWhenStarted {
-            viewModel.recipe.collect {
-                it?.also { recipe ->
-                    binding.recipeName.setText(recipe.info.name)
-                    binding.recipeDescription.setText(recipe.info.description)
-                    binding.recipeCategory.setText(recipe.info.category)
-                    binding.recipeInstruction.setText(recipe.info.instruction)
-                    val adapter = IngredientsAdapter(
-                        recipe.ingredients,
-                        viewModel::updateIngredientName,
-                        viewModel::updateIngredientMeasure,
-                        viewModel::addIngredient
-                    )
-                    binding.ingredients.adapter = adapter
-                    if (recipe.info.photoUri.isNotBlank()) {
-                        binding.recipePhoto.load(recipe.info.photoUri)
+            viewModel.recipeInfo.collect {
+                it?.also { recipeInfo ->
+                    binding.recipeName.setText(recipeInfo.name)
+                    binding.recipeDescription.setText(recipeInfo.description)
+                    binding.recipeCategory.setText(recipeInfo.category)
+                    binding.recipeInstruction.setText(recipeInfo.instruction)
+                    if (recipeInfo.photoUri.isNotBlank()) {
+                        binding.recipePhoto.load(recipeInfo.photoUri)
                     }
 
-                    viewModel.setRecipeEditable()
+                    viewModel.setRecipeInfoEditable()
                 }
             }
         }
+    }
+
+    private fun setupIngredientsRecyclerView() {
+        binding.ingredients.layoutManager = LinearLayoutManager(requireContext())
+        val adapter = IngredientsAdapter(
+            viewModel::updateIngredientName,
+            viewModel::updateIngredientMeasure,
+            viewModel::addIngredient,
+            viewModel::swapIngredients,
+            viewModel::deleteIngredient,
+            viewLifecycleOwner.lifecycleScope,
+        )
+        binding.ingredients.adapter = adapter
+        val ingredientTouchHelperCallback = IngredientTouchHelper(adapter)
+        val ingredientTouchHelper = ItemTouchHelper(ingredientTouchHelperCallback)
+        ingredientTouchHelper.attachToRecyclerView(binding.ingredients)
 
         viewLifecycleOwner.lifecycleScope.launchWhenStarted {
-            viewModel.isSaveFinished.collect { isSaveFinished ->
-                if (isSaveFinished) {
-                    findNavController().popBackStack()
+            viewModel.ingredients.collect {
+                it?.also { ingredients ->
+                    adapter.submitIngredients(ingredients)
                 }
             }
         }
@@ -135,7 +158,7 @@ class EditRecipeFragment : Fragment() {
 
     private fun EditText.doOnRecipeUpdate(callback: (String) -> Unit) {
         doAfterTextChanged { text ->
-            if (viewModel.isRecipeEditable) {
+            if (viewModel.isRecipeInfoEditable) {
                 callback(text.toString())
             }
         }

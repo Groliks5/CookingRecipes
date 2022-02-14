@@ -10,5 +10,5 @@ data class Recipe(
         parentColumn = "id",
         entityColumn = "recipe_id"
     )
-    val ingredients: MutableList<Ingredient>,
+    val ingredients: List<Ingredient>,
 )

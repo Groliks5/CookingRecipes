@@ -4,6 +4,8 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.EditText
 import androidx.core.widget.doAfterTextChanged
+import androidx.lifecycle.LifecycleCoroutineScope
+import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.groliks.cookingrecipes.data.model.Ingredient
 import com.groliks.cookingrecipes.databinding.ItemAddIngredientBinding
@@ -15,11 +17,14 @@ private const val ADD_INGREDIENT_VIEW_TYPE = 2
 private const val ADD_INGREDIENT_BUTTON_SIZE = 1
 
 class IngredientsAdapter(
-    private val ingredients: List<Ingredient>,
     private val onIngredientNameChange: (Int, String) -> Unit,
     private val onIngredientMeasureChange: (Int, String) -> Unit,
-    private val onAddIngredient: () -> Int
-) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+    private val onAddIngredient: () -> Unit,
+    private val onIngredientMove: (Int, Int) -> Unit,
+    private val onDeleteIngredient: (Int) -> Unit,
+    private val coroutineScope: LifecycleCoroutineScope,
+) : RecyclerView.Adapter<RecyclerView.ViewHolder>(), IngredientTouchHelperAdapter {
+    private var ingredients: List<Ingredient> = listOf()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         val inflater = LayoutInflater.from(parent.context)
@@ -40,6 +45,8 @@ class IngredientsAdapter(
 
     override fun getItemCount(): Int = ingredients.size + ADD_INGREDIENT_BUTTON_SIZE
 
+    override fun getLastIngredientPosition(): Int = ingredients.lastIndex
+
     override fun getItemViewType(position: Int): Int {
         return if (position < ingredients.size) {
             INGREDIENT_VIEW_TYPE
@@ -48,10 +55,21 @@ class IngredientsAdapter(
         }
     }
 
-    private fun addIngredient() {
-        val insertPosition = onAddIngredient()
-        notifyItemInserted(insertPosition)
+    fun submitIngredients(newIngredients: List<Ingredient>) {
+        coroutineScope.launchWhenStarted {
+            val diffCallback = IngredientDiffUtilCallback(ingredients, newIngredients)
+            val diff = DiffUtil.calculateDiff(diffCallback)
+            ingredients = newIngredients
+            diff.dispatchUpdatesTo(this@IngredientsAdapter)
+        }
     }
+
+    override fun onMove(oldPosition: Int, newPosition: Int) =
+        onIngredientMove(oldPosition, newPosition)
+
+    override fun onSwipe(position: Int) = onDeleteIngredient(position)
+
+    private fun addIngredient() = onAddIngredient()
 
     inner class IngredientViewHolder(
         private val binding: ItemEditIngredientBinding

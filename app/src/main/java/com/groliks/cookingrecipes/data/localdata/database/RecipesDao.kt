@@ -38,6 +38,9 @@ abstract class RecipesDao {
     @Update
     protected abstract suspend fun updateIngredients(ingredients: List<Ingredient>)
 
+    @Query("DELETE FROM ingredients WHERE id NOT IN (:ingredientsIds)")
+    protected abstract suspend fun deleteOldIngredients(ingredientsIds: List<Long>)
+
     @Transaction
     open suspend fun updateRecipe(recipe: Recipe) {
         updateRecipeInfo(recipe.info)
@@ -47,5 +50,7 @@ abstract class RecipesDao {
         for (i in newIngredients.indices) {
             newIngredients[i].id = newIngredientsIds[i]
         }
+        val ingredientsIds = recipe.ingredients.map { it.id }
+        deleteOldIngredients(ingredientsIds)
     }
 }

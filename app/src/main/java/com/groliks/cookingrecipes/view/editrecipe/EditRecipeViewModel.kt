@@ -7,6 +7,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import com.groliks.cookingrecipes.data.model.Ingredient
 import com.groliks.cookingrecipes.data.model.Recipe
+import com.groliks.cookingrecipes.data.model.RecipeInfo
 import com.groliks.cookingrecipes.data.repositories.RecipesRepository
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
@@ -22,11 +23,14 @@ import java.io.IOException
 
 class EditRecipeViewModel(private val repository: RecipesRepository, private val recipeId: Long) :
     ViewModel() {
-    private val _recipe = MutableStateFlow<Recipe?>(null)
-    val recipe = _recipe.asStateFlow()
+    private val _recipeInfo = MutableStateFlow<RecipeInfo?>(null)
+    val recipeInfo = _recipeInfo.asStateFlow()
+    private val _ingredients = MutableStateFlow<List<Ingredient>?>(null)
+    val ingredients = _ingredients.asStateFlow()
+
     var isRecipeUpdated = false
         private set
-    var isRecipeEditable = false
+    var isRecipeInfoEditable = false
         private set
 
     private val _isSaveFinished =
@@ -38,71 +42,101 @@ class EditRecipeViewModel(private val repository: RecipesRepository, private val
     init {
         viewModelScope.launch {
             val recipe = repository.getRecipe(RecipesRepository.LOCAL_DATA_SOURCE, recipeId)
-            _recipe.emit(recipe)
+            val sortedIngredients = recipe.ingredients.sortedBy { it.position }
+            _recipeInfo.emit(recipe.info)
+            _ingredients.emit(sortedIngredients)
         }
     }
 
-    fun setRecipeEditable() {
-        isRecipeEditable = true
+    fun setRecipeInfoEditable() {
+        isRecipeInfoEditable = true
     }
 
     fun updateRecipeName(newName: String) {
-        recipe.value?.apply { info.name = newName }
+        recipeInfo.value?.apply { name = newName }
         isRecipeUpdated = true
     }
 
     fun updateRecipeCategory(newCategory: String) {
-        recipe.value?.apply { info.category = newCategory }
+        recipeInfo.value?.apply { category = newCategory }
         isRecipeUpdated = true
     }
 
     fun updateRecipeDescription(newDescription: String) {
-        recipe.value?.apply { info.description = newDescription }
+        recipeInfo.value?.apply { description = newDescription }
         isRecipeUpdated = true
     }
 
     fun updateRecipeInstruction(newInstruction: String) {
-        recipe.value?.apply { info.instruction = newInstruction }
+        recipeInfo.value?.apply { instruction = newInstruction }
         isRecipeUpdated = true
     }
 
     fun updateRecipePhoto(newPhoto: Bitmap) {
-        recipe.value?.apply { info.newPhoto = newPhoto }
+        recipeInfo.value?.apply { this.newPhoto = newPhoto }
         isRecipeUpdated = true
     }
 
     fun updateIngredientName(position: Int, newName: String) {
-        recipe.value?.apply { ingredients[position].name = newName }
+        ingredients.value?.apply { this[position].name = newName }
         isRecipeUpdated = true
     }
 
     fun updateIngredientMeasure(position: Int, newMeasure: String) {
-        recipe.value?.apply { ingredients[position].measure = newMeasure }
+        ingredients.value?.apply { this[position].measure = newMeasure }
         isRecipeUpdated = true
     }
 
-    fun addIngredient(): Int {
-        val ingredientPosition = recipe.value?.let {
-            val newIngredient = Ingredient(recipeId = it.info.id, position = it.ingredients.size)
-            it.ingredients.add(newIngredient)
-            it.ingredients.size - 1
-        } ?: throw IllegalStateException("No recipe found in EditRecipeVM")
+    fun addIngredient() {
+        ingredients.value?.toMutableList()?.apply {
+            val recipeId = recipeInfo.value?.id
+                ?: throw IllegalStateException("recipeInfo in EditRecipeViewModel not found")
+            val newIngredient = Ingredient(recipeId = recipeId, position = size)
+            add(newIngredient)
+            _ingredients.tryEmit(this)
+        }
         isRecipeUpdated = true
-        return ingredientPosition
+    }
+
+    fun swapIngredients(position1: Int, position2: Int) {
+        ingredients.value?.toMutableList()?.also { ingredients ->
+            val tempIngredient = ingredients[position1]
+            ingredients[position1] = ingredients[position2]
+            ingredients[position2] = tempIngredient
+            ingredients[position1].position = position1
+            ingredients[position2].position = position2
+            _ingredients.tryEmit(ingredients)
+        }
+        isRecipeUpdated = true
+    }
+
+    fun deleteIngredient(position: Int) {
+        ingredients.value?.toMutableList()?.apply {
+            removeAt(position)
+            for (i in position..lastIndex) {
+                this[i].position--
+            }
+            _ingredients.tryEmit(this)
+        }
+        isRecipeUpdated = true
     }
 
     fun saveRecipe() {
-        recipe.value?.also { recipe ->
-            savingJob = viewModelScope.launch {
-                isRecipeEditable = false
-                try {
-                    repository.updateRecipe(recipe)
-                } catch (exception: IOException) {
-                    Log.e("EditRecipeViewModel", exception.message.toString())
+        recipeInfo.value?.also { recipeInfo ->
+            ingredients.value?.also { ingredients ->
+                savingJob = viewModelScope.launch {
+                    isRecipeInfoEditable = false
+                    try {
+                        Log.e("vm", ingredients.toString())
+                        val recipe = Recipe(recipeInfo, ingredients)
+                        repository.updateRecipe(recipe)
+                    } catch (exception: IOException) {
+                        Log.e("EditRecipeViewModel", exception.message.toString())
+                    }
+                    recipeInfo.newPhoto = null
+                    isRecipeUpdated = false
+                    _isSaveFinished.emit(true)
                 }
-                recipe.info.newPhoto = null
-                isRecipeUpdated = false
-                _isSaveFinished.emit(true)
             }
         }
     }
@@ -110,7 +144,7 @@ class EditRecipeViewModel(private val repository: RecipesRepository, private val
     fun cancelSaving() {
         savingJob?.cancel()
         savingJob = null
-        isRecipeEditable = true
+        isRecipeInfoEditable = true
     }
 }
 
