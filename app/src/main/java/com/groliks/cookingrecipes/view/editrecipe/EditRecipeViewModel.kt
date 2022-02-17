@@ -128,7 +128,6 @@ class EditRecipeViewModel(private val repository: RecipesRepository, private val
                 savingJob = viewModelScope.launch {
                     isRecipeInfoEditable = false
                     try {
-                        Log.e("vm", ingredients.toString())
                         val recipe = Recipe(recipeInfo, ingredients)
                         repository.updateRecipe(recipe)
                     } catch (exception: IOException) {

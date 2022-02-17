@@ -1,14 +1,30 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:viewBindingIgnore="true">
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+    style="@style/SavingRecipeCardViewStyle"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content">
 
-    <TextView
-        android:id="@+id/saving_recipe"
+    <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/saving" />
+        android:orientation="vertical">
 
-</FrameLayout>
+        <TextView
+            android:id="@+id/saving_recipe"
+            style="@style/SavingRecipeTextStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/saving" />
+
+        <Button
+            android:id="@+id/cancel_button"
+            style="@style/CancelButtonStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:text="@string/cancel" />
+
+    </LinearLayout>
+
+
+</com.google.android.material.card.MaterialCardView>
