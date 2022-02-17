@@ -1,4 +1,4 @@
-package com.groliks.cookingrecipes.data.model
+package com.groliks.cookingrecipes.data.recipes.model
 
 import androidx.room.ColumnInfo
 import androidx.room.Entity

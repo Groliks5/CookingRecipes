@@ -10,12 +10,16 @@ import com.groliks.cookingrecipes.view.recipeslist.recipeslist.RecipesAdapter
 class RemoteRecipesListFragment : RecipesListFragment() {
     override val viewModel: RecipesListViewModel
         get() = TODO("Not yet implemented")
-    override val adapter: RecipesAdapter
+    override val recipesAdapter: RecipesAdapter
         get() = TODO("Not yet implemented")
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
         binding.addRecipe.isGone = true
+    }
+
+    override fun onSelectFilters() {
+        TODO("Not yet implemented")
     }
 }

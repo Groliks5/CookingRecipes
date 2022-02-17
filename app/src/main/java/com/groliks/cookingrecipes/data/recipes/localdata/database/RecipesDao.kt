@@ -1,16 +1,18 @@
-package com.groliks.cookingrecipes.data.localdata.database
+package com.groliks.cookingrecipes.data.recipes.localdata.database
 
 import androidx.room.*
-import com.groliks.cookingrecipes.data.model.Ingredient
-import com.groliks.cookingrecipes.data.model.Recipe
-import com.groliks.cookingrecipes.data.model.RecipeInfo
-import kotlinx.coroutines.flow.Flow
+import com.groliks.cookingrecipes.data.recipes.model.Ingredient
+import com.groliks.cookingrecipes.data.recipes.model.Recipe
+import com.groliks.cookingrecipes.data.recipes.model.RecipeInfo
 
 @Dao
 abstract class RecipesDao {
     @Transaction
-    @Query("SELECT * FROM recipes")
-    abstract fun getRecipes(): Flow<List<Recipe>>
+    @Query("SELECT * FROM recipes WHERE category LIKE (:categories) AND (isFavourite = 1 OR isFavourite = :isOnlyFavourite)")
+    abstract suspend fun getRecipes(
+        categories: List<String>,
+        isOnlyFavourite: Boolean
+    ): List<Recipe>
 
     @Insert
     protected abstract suspend fun addRecipeInfo(recipeInfo: RecipeInfo): Long

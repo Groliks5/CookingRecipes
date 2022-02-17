@@ -4,16 +4,22 @@
     <option name="filePathToZoomLevelMap">
       <map>
         <entry key="..\:/CookingRecipes/app/src/main/res/layout/activity_main.xml" value="0.22" />
+        <entry key="..\:/CookingRecipes/app/src/main/res/layout/dialog_add_filter.xml" value="0.75" />
         <entry key="..\:/CookingRecipes/app/src/main/res/layout/dialog_photo_choosing.xml" value="0.2046875" />
         <entry key="..\:/CookingRecipes/app/src/main/res/layout/dialog_photo_preview.xml" value="0.1" />
         <entry key="..\:/CookingRecipes/app/src/main/res/layout/dialog_save_recipe.xml" value="0.21927083333333333" />
         <entry key="..\:/CookingRecipes/app/src/main/res/layout/fragment_edit_recipe.xml" value="0.21927083333333333" />
         <entry key="..\:/CookingRecipes/app/src/main/res/layout/fragment_recipe_view.xml" value="0.21927083333333333" />
         <entry key="..\:/CookingRecipes/app/src/main/res/layout/fragment_recipes_list.xml" value="0.21927083333333333" />
+        <entry key="..\:/CookingRecipes/app/src/main/res/layout/fragment_select_filters.xml" value="0.1" />
         <entry key="..\:/CookingRecipes/app/src/main/res/layout/fragment_settings.xml" value="0.21927083333333333" />
         <entry key="..\:/CookingRecipes/app/src/main/res/layout/fragment_view_recipe.xml" value="0.21927083333333333" />
+        <entry key="..\:/CookingRecipes/app/src/main/res/layout/item_add_category_filter.xml" value="0.19270833333333334" />
         <entry key="..\:/CookingRecipes/app/src/main/res/layout/item_add_ingredient.xml" value="0.21197916666666666" />
+        <entry key="..\:/CookingRecipes/app/src/main/res/layout/item_category_filter.xml" value="0.19270833333333334" />
         <entry key="..\:/CookingRecipes/app/src/main/res/layout/item_edit_ingredient.xml" value="0.21197916666666666" />
+        <entry key="..\:/CookingRecipes/app/src/main/res/layout/item_filter.xml" value="0.12001811594202899" />
+        <entry key="..\:/CookingRecipes/app/src/main/res/layout/item_select_filter.xml" value="0.1884498480243161" />
         <entry key="..\:/CookingRecipes/app/src/main/res/menu/menu_bottom.xml" value="0.21927083333333333" />
       </map>
     </option>

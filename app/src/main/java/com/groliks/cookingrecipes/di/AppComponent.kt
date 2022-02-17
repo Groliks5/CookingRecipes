@@ -1,8 +1,10 @@
 package com.groliks.cookingrecipes.di
 
 import android.content.Context
+import com.groliks.cookingrecipes.di.data.DataModule
 import com.groliks.cookingrecipes.view.editrecipe.EditRecipeFragment
 import com.groliks.cookingrecipes.view.localrecipeslist.LocalRecipesListFragment
+import com.groliks.cookingrecipes.view.selectfilters.SelectFiltersFragment
 import dagger.BindsInstance
 import dagger.Component
 import javax.inject.Singleton
@@ -20,4 +22,5 @@ interface AppComponent {
 
     fun inject(fragment: LocalRecipesListFragment)
     fun inject(fragment: EditRecipeFragment)
+    fun inject(fragment: SelectFiltersFragment)
 }

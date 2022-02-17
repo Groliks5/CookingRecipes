@@ -7,6 +7,7 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.groliks.cookingrecipes.appComponent
+import com.groliks.cookingrecipes.data.DataSource
 import com.groliks.cookingrecipes.view.localrecipeslist.recipeslist.LocalRecipesAdapter
 import com.groliks.cookingrecipes.view.recipeslist.RecipesListFragment
 import com.groliks.cookingrecipes.view.recipeslist.recipeslist.RecipesAdapter
@@ -17,7 +18,7 @@ class LocalRecipesListFragment : RecipesListFragment() {
     @Inject
     lateinit var viewModelFactory: LocalRecipesListViewModel.Factory
     override val viewModel: LocalRecipesListViewModel by viewModels { viewModelFactory }
-    override val adapter: RecipesAdapter by lazy { LocalRecipesAdapter() }
+    override val recipesAdapter: RecipesAdapter by lazy { LocalRecipesAdapter() }
 
     override fun onAttach(context: Context) {
         context.appComponent.inject(this)
@@ -37,5 +38,13 @@ class LocalRecipesListFragment : RecipesListFragment() {
                 }
             }
         }
+    }
+
+    override fun onSelectFilters() {
+        val action = LocalRecipesListFragmentDirections.actionLocalRecipesToSelectFiltersFragment(
+            viewModel.filters.value.toTypedArray(),
+            DataSource.LOCAL
+        )
+        findNavController().navigate(action)
     }
 }

@@ -3,7 +3,7 @@ package com.groliks.cookingrecipes.view.recipeslist.recipeslist
 import android.view.View
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.groliks.cookingrecipes.data.model.Recipe
+import com.groliks.cookingrecipes.data.recipes.model.Recipe
 
 abstract class RecipesAdapter :
     ListAdapter<Recipe, RecipesAdapter.RecipeViewHolder>(RecipeDiffUtilCallback()) {

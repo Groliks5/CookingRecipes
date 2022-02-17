@@ -4,7 +4,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.navigation.findNavController
 import coil.load
-import com.groliks.cookingrecipes.data.model.Recipe
+import com.groliks.cookingrecipes.data.recipes.model.Recipe
 import com.groliks.cookingrecipes.databinding.ItemLocalRecipeBinding
 import com.groliks.cookingrecipes.view.localrecipeslist.LocalRecipesListFragmentDirections
 import com.groliks.cookingrecipes.view.recipeslist.recipeslist.RecipesAdapter

@@ -7,7 +7,7 @@ import androidx.core.widget.doAfterTextChanged
 import androidx.lifecycle.LifecycleCoroutineScope
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
-import com.groliks.cookingrecipes.data.model.Ingredient
+import com.groliks.cookingrecipes.data.recipes.model.Ingredient
 import com.groliks.cookingrecipes.databinding.ItemAddIngredientBinding
 import com.groliks.cookingrecipes.databinding.ItemEditIngredientBinding
 

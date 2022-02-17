@@ -35,4 +35,13 @@
     <string name="photo_preview">Photo preview</string>
     <string name="photo_uri">Photo uri</string>
     <string name="uri_not_found">Uri not found</string>
+    <string name="add_filter">Add filter</string>
+    <string name="delete_filter">Delete filter</string>
+    <string name="favourites">Favourites</string>
+    <string name="delete_old_filters">Delte old filters</string>
+    <string name="add_category_filter">Add category</string>
+    <string name="category_filter">Category filter</string>
+    <string name="filter_selection_name">%1$s: %2$s</string>
+    <string name="category">Category</string>
+    <string name="favoutrite">Favourites</string>
 </resources>

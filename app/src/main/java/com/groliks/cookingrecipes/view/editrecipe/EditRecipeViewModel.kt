@@ -5,10 +5,11 @@ import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
-import com.groliks.cookingrecipes.data.model.Ingredient
-import com.groliks.cookingrecipes.data.model.Recipe
-import com.groliks.cookingrecipes.data.model.RecipeInfo
-import com.groliks.cookingrecipes.data.repositories.RecipesRepository
+import com.groliks.cookingrecipes.data.DataSource
+import com.groliks.cookingrecipes.data.recipes.model.Ingredient
+import com.groliks.cookingrecipes.data.recipes.model.Recipe
+import com.groliks.cookingrecipes.data.recipes.model.RecipeInfo
+import com.groliks.cookingrecipes.data.recipes.repository.RecipesRepository
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
@@ -41,7 +42,7 @@ class EditRecipeViewModel(private val repository: RecipesRepository, private val
 
     init {
         viewModelScope.launch {
-            val recipe = repository.getRecipe(RecipesRepository.LOCAL_DATA_SOURCE, recipeId)
+            val recipe = repository.getRecipe(DataSource.LOCAL, recipeId)
             val sortedIngredients = recipe.ingredients.sortedBy { it.position }
             _recipeInfo.emit(recipe.info)
             _ingredients.emit(sortedIngredients)

@@ -1,4 +1,4 @@
-package com.groliks.cookingrecipes.data.localdata.photosaver
+package com.groliks.cookingrecipes.data.recipes.localdata.photosaver
 
 import android.graphics.Bitmap
 

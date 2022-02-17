@@ -1,8 +1,35 @@
 package com.groliks.cookingrecipes.view.recipeslist
 
-import com.groliks.cookingrecipes.data.model.Recipe
-import kotlinx.coroutines.flow.Flow
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import com.groliks.cookingrecipes.data.filters.model.Filter
+import com.groliks.cookingrecipes.data.recipes.model.Recipe
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.launch
 
-interface RecipesListViewModel {
-    val recipesList: Flow<List<Recipe>>
+abstract class RecipesListViewModel : ViewModel() {
+    abstract val recipesList: StateFlow<List<Recipe>>
+    private val _filters = MutableStateFlow(listOf<Filter>())
+    val filters = _filters.asStateFlow()
+
+    abstract suspend fun updateRecipesList()
+
+    fun updateSelectedFilters(selectedFilters: List<Filter>) {
+        viewModelScope.launch {
+            _filters.emit(selectedFilters)
+            updateRecipesList()
+        }
+    }
+
+    fun deleteFilter(filter: Filter) {
+        viewModelScope.launch {
+            filters.value.toMutableList().apply {
+                remove(filter)
+                _filters.emit(this)
+            }
+            updateRecipesList()
+        }
+    }
 }
