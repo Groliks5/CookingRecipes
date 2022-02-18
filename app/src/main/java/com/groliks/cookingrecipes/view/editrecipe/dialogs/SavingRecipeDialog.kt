@@ -5,7 +5,6 @@ import android.animation.TypeEvaluator
 import android.animation.ValueAnimator
 import android.content.DialogInterface
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -14,6 +13,7 @@ import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.setFragmentResult
 import com.groliks.cookingrecipes.R
 import com.groliks.cookingrecipes.databinding.DialogSavingRecipeBinding
+import com.groliks.cookingrecipes.view.util.hideBackground
 
 class SavingRecipeDialog : DialogFragment() {
     private lateinit var savingAnimator: ValueAnimator
@@ -27,7 +27,7 @@ class SavingRecipeDialog : DialogFragment() {
 
         binding.cancelButton.setOnClickListener { dismiss() }
 
-        dialog?.window?.setBackgroundDrawableResource(android.R.color.transparent)
+        dialog?.hideBackground()
 
         setupSavingAnimation(binding)
 
@@ -59,7 +59,6 @@ class SavingRecipeDialog : DialogFragment() {
 
     override fun onStart() {
         super.onStart()
-        Log.e("f", "f")
         savingAnimator.start()
     }
 

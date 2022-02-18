@@ -1,11 +1,10 @@
 package com.groliks.cookingrecipes.view.editrecipe.dialogs
 
-import android.app.AlertDialog
-import android.app.Dialog
-import android.content.DialogInterface
 import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.os.bundleOf
@@ -15,11 +14,12 @@ import androidx.fragment.app.setFragmentResultListener
 import androidx.navigation.fragment.findNavController
 import com.groliks.cookingrecipes.R
 import com.groliks.cookingrecipes.databinding.DialogPhotoChoosingBinding
+import com.groliks.cookingrecipes.view.util.hideBackground
 
 private const val MIMETYPE_IMAGES = "image/*"
 private const val SAVE_PHOTO_URI_KEY = "photo_uri_key"
 
-class PhotoChoosingDialog : DialogFragment(), DialogInterface.OnClickListener {
+class PhotoChoosingDialog : DialogFragment() {
     private var _binding: DialogPhotoChoosingBinding? = null
     private val binding get() = _binding!!
     private val getImageUriFromGallery =
@@ -30,20 +30,51 @@ class PhotoChoosingDialog : DialogFragment(), DialogInterface.OnClickListener {
         }
     private var photoUri: String? = null
 
-    override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
         _binding = DialogPhotoChoosingBinding.inflate(LayoutInflater.from(requireContext()))
 
         photoUri = savedInstanceState?.getString(SAVE_PHOTO_URI_KEY)
 
-        binding.pickFromGallery.setOnClickListener {
-            getImageUriFromGallery.launch(MIMETYPE_IMAGES)
-        }
+        dialog?.hideBackground()
+
+        setupPickPhotoFromGalleryButton()
+        setupEnterUriButton()
+        setupCancelButton()
+
+        setupPhotoPreviewResultListener()
+
+        return binding.root
+    }
+
+    private fun setupEnterUriButton() {
         binding.enterUri.setOnClickListener {
             dialog?.hide()
             val action = PhotoChoosingDialogDirections.enterUri()
             findNavController().navigate(action)
         }
 
+        setFragmentResultListener(EnterPhotoUriDialog.ENTER_URI_KEY) { _, bundle ->
+            findNavController().popBackStack(R.id.photoChoosingDialog, false)
+            dialog?.show()
+            openPhotoPreview(bundle.getString(EnterPhotoUriDialog.URI_KEY))
+        }
+    }
+
+    private fun setupPickPhotoFromGalleryButton() {
+        binding.pickFromGallery.setOnClickListener {
+            getImageUriFromGallery.launch(MIMETYPE_IMAGES)
+        }
+    }
+
+    private fun setupCancelButton() {
+        binding.cancelButton.setOnClickListener { dismiss() }
+    }
+
+    private fun setupPhotoPreviewResultListener() {
         setFragmentResultListener(PhotoPreviewDialog.PHOTO_PREVIEW_KEY) { _, bundle ->
             if (bundle.getString(PhotoPreviewDialog.PHOTO_CONFIRM_KEY) == PhotoPreviewDialog.PHOTO_CONFIRMED) {
                 setFragmentResult(PHOTO_CHOOSING_KEY, bundleOf(PHOTO_URI_KEY to photoUri))
@@ -53,18 +84,6 @@ class PhotoChoosingDialog : DialogFragment(), DialogInterface.OnClickListener {
                 dialog?.show()
             }
         }
-
-        setFragmentResultListener(EnterPhotoUriDialog.ENTER_URI_KEY) { _, bundle ->
-            findNavController().popBackStack(R.id.photoChoosingDialog, false)
-            dialog?.show()
-            openPhotoPreview(bundle.getString(EnterPhotoUriDialog.URI_KEY))
-        }
-
-        return AlertDialog.Builder(requireContext())
-            .setView(binding.root)
-            .setNegativeButton(R.string.cancel, this)
-            .setCancelable(false)
-            .create()
     }
 
     private fun openPhotoPreview(uri: String?) {
@@ -76,10 +95,6 @@ class PhotoChoosingDialog : DialogFragment(), DialogInterface.OnClickListener {
             findNavController().navigate(action)
             dialog?.hide()
         }
-    }
-
-    override fun onClick(dialog: DialogInterface?, which: Int) {
-        dismiss()
     }
 
     override fun onSaveInstanceState(outState: Bundle) {

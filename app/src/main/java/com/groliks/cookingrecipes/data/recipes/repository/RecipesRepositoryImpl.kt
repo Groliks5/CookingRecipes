@@ -16,8 +16,8 @@ class RecipesRepositoryImpl @Inject constructor(
     override suspend fun getRecipes(
         dataSource: DataSource,
         recipesFilter: List<Filter>
-    ): List<Recipe> {
-        return localRecipesDataSource.getRecipes(recipesFilter)
+    ): List<Recipe> = withContext(Dispatchers.IO) {
+        localRecipesDataSource.getRecipes(recipesFilter)
     }
 
     override suspend fun addRecipe(recipe: Recipe): Long = withContext(Dispatchers.IO) {

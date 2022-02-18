@@ -9,7 +9,7 @@
         <item name="android:textSize">30sp</item>
     </style>
 
-    <style name="SavingRecipeCardViewStyle" parent="Theme.CookingRecipes">
+    <style name="DialogCardViewStyle" parent="Theme.CookingRecipes">
         <item name="cardCornerRadius">15dp</item>
         <item name="contentPadding">32dp</item>
         <item name="cardBackgroundColor">@color/light_grey</item>

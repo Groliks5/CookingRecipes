@@ -5,11 +5,11 @@
       <map>
         <entry key="..\:/CookingRecipes/app/src/main/res/layout/activity_main.xml" value="0.22" />
         <entry key="..\:/CookingRecipes/app/src/main/res/layout/dialog_add_filter.xml" value="0.75" />
-        <entry key="..\:/CookingRecipes/app/src/main/res/layout/dialog_photo_choosing.xml" value="0.2046875" />
+        <entry key="..\:/CookingRecipes/app/src/main/res/layout/dialog_photo_choosing.xml" value="0.33" />
         <entry key="..\:/CookingRecipes/app/src/main/res/layout/dialog_photo_preview.xml" value="0.1" />
         <entry key="..\:/CookingRecipes/app/src/main/res/layout/dialog_save_recipe.xml" value="0.21927083333333333" />
         <entry key="..\:/CookingRecipes/app/src/main/res/layout/dialog_saving_recipe.xml" value="0.25" />
-        <entry key="..\:/CookingRecipes/app/src/main/res/layout/fragment_edit_recipe.xml" value="0.21927083333333333" />
+        <entry key="..\:/CookingRecipes/app/src/main/res/layout/fragment_edit_recipe.xml" value="0.2" />
         <entry key="..\:/CookingRecipes/app/src/main/res/layout/fragment_recipe_view.xml" value="0.21927083333333333" />
         <entry key="..\:/CookingRecipes/app/src/main/res/layout/fragment_recipes_list.xml" value="0.21927083333333333" />
         <entry key="..\:/CookingRecipes/app/src/main/res/layout/fragment_select_filters.xml" value="0.1" />
