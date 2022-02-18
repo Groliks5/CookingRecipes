@@ -5,7 +5,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.os.bundleOf
 import androidx.fragment.app.DialogFragment
@@ -60,7 +59,10 @@ class PhotoChoosingDialog : DialogFragment() {
         setFragmentResultListener(EnterPhotoUriDialog.ENTER_URI_KEY) { _, bundle ->
             findNavController().popBackStack(R.id.photoChoosingDialog, false)
             dialog?.show()
-            openPhotoPreview(bundle.getString(EnterPhotoUriDialog.URI_KEY))
+            val uri = bundle.getString(EnterPhotoUriDialog.URI_KEY)
+            if (uri != null) {
+                openPhotoPreview(uri)
+            }
         }
     }
 
@@ -86,15 +88,11 @@ class PhotoChoosingDialog : DialogFragment() {
         }
     }
 
-    private fun openPhotoPreview(uri: String?) {
-        if (uri == null) {
-            Toast.makeText(requireContext(), R.string.uri_not_found, Toast.LENGTH_SHORT).show()
-        } else {
-            photoUri = uri
-            val action = PhotoChoosingDialogDirections.previewPhoto(uri)
-            findNavController().navigate(action)
-            dialog?.hide()
-        }
+    private fun openPhotoPreview(uri: String) {
+        photoUri = uri
+        val action = PhotoChoosingDialogDirections.previewPhoto(uri)
+        findNavController().navigate(action)
+        dialog?.hide()
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
