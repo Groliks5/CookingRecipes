@@ -3,7 +3,9 @@ package com.groliks.cookingrecipes.view.localrecipeslist.recipeslist
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.navigation.findNavController
+import coil.clear
 import coil.load
+import com.groliks.cookingrecipes.R
 import com.groliks.cookingrecipes.data.recipes.model.Recipe
 import com.groliks.cookingrecipes.databinding.ItemLocalRecipeBinding
 import com.groliks.cookingrecipes.view.localrecipeslist.LocalRecipesListFragmentDirections
@@ -32,10 +34,25 @@ class LocalRecipesAdapter : RecipesAdapter() {
         }
 
         override fun bind(recipe: Recipe) {
+            binding.recipeInfo.recipePhotoLoadingBar.show()
             this.recipe = recipe
-            binding.recipeName.text = recipe.info.name
-            binding.recipeDescription.text = recipe.info.description
-            binding.recipePhoto.load(recipe.info.photoUri)
+            binding.recipeInfo.recipeName.text = recipe.info.name
+            binding.recipeInfo.recipeDescription.text = recipe.info.description
+            binding.recipeInfo.recipePhoto.clear()
+            binding.recipeInfo.recipePhoto.load(recipe.info.photoUri) {
+                error(R.drawable.ic_error_image_loading)
+                listener(
+                    onCancel = {
+                        binding.recipeInfo.recipePhotoLoadingBar.hide()
+                    },
+                    onError = { _, _ ->
+                        binding.recipeInfo.recipePhotoLoadingBar.hide()
+                    },
+                    onSuccess = { _, _ ->
+                        binding.recipeInfo.recipePhotoLoadingBar.hide()
+                    }
+                )
+            }
         }
     }
 }
