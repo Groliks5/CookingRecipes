@@ -67,9 +67,9 @@ class EditRecipeFragment : Fragment() {
             }
         }
 
-        setFragmentResultListener(ExitWithoutSavingDialog.RESULT_KEY) { _, bundle ->
+        setFragmentResultListener(ExitWithoutSavingDialog.EXIT_WITHOUT_SAVING_KEY) { _, bundle ->
             val result = bundle.getString(ExitWithoutSavingDialog.EXIT_RESULT_KEY)
-            if (result == ExitWithoutSavingDialog.EXIT_CONFIRMATION) {
+            if (result == ExitWithoutSavingDialog.EXIT_CONFIRMED) {
                 findNavController().popBackStack(R.id.edit_recipe, true)
             }
         }
