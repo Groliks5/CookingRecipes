@@ -3,18 +3,43 @@ package com.groliks.cookingrecipes.view.recipeslist.recipeslist
 import android.view.View
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.groliks.cookingrecipes.data.recipes.model.Recipe
+import coil.clear
+import coil.load
+import com.groliks.cookingrecipes.R
+import com.groliks.cookingrecipes.data.recipes.model.RecipeInfo
+import com.groliks.cookingrecipes.databinding.RecipeInfoBinding
 
 abstract class RecipesAdapter :
-    ListAdapter<Recipe, RecipesAdapter.RecipeViewHolder>(RecipeDiffUtilCallback()) {
+    ListAdapter<RecipeInfo, RecipesAdapter.RecipeViewHolder>(RecipeDiffUtilCallback()) {
 
     override fun onBindViewHolder(holder: RecipeViewHolder, position: Int) {
         holder.bind(getItem(position))
     }
 
-    abstract inner class RecipeViewHolder(itemView: View) :
+    open inner class RecipeViewHolder(private val binding: RecipeInfoBinding, itemView: View) :
         RecyclerView.ViewHolder(itemView) {
+        protected var recipe: RecipeInfo? = null
 
-        abstract fun bind(recipe: Recipe)
+        open fun bind(recipe: RecipeInfo) {
+            binding.recipePhotoLoadingBar.show()
+            this.recipe = recipe
+            binding.recipeName.text = recipe.name
+            binding.recipeDescription.text = recipe.description
+            binding.recipePhoto.clear()
+            binding.recipePhoto.load(recipe.photoUri) {
+                error(R.drawable.ic_error_image_loading)
+                listener(
+                    onCancel = {
+                        binding.recipePhotoLoadingBar.hide()
+                    },
+                    onError = { _, _ ->
+                        binding.recipePhotoLoadingBar.hide()
+                    },
+                    onSuccess = { _, _ ->
+                        binding.recipePhotoLoadingBar.hide()
+                    }
+                )
+            }
+        }
     }
 }

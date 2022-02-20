@@ -4,6 +4,7 @@ import com.groliks.cookingrecipes.data.filters.model.Filter
 import com.groliks.cookingrecipes.data.recipes.localdata.database.RecipesDao
 import com.groliks.cookingrecipes.data.recipes.localdata.photosaver.PhotoSaver
 import com.groliks.cookingrecipes.data.recipes.model.Recipe
+import com.groliks.cookingrecipes.data.recipes.model.RecipeList
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -12,7 +13,7 @@ class LocalRecipesDataSourceImpl @Inject constructor(
     private val recipesDao: RecipesDao,
     private val photoSaver: PhotoSaver,
 ) : LocalRecipesDataSource {
-    override suspend fun getRecipes(recipesFilter: List<Filter>): List<Recipe> {
+    override suspend fun getRecipes(recipesFilter: List<Filter>): RecipeList {
         var categories = recipesFilter.filter { it.type == Filter.Type.CATEGORY }
             .map { it.name }
         if (categories.isEmpty()) {
@@ -20,7 +21,7 @@ class LocalRecipesDataSourceImpl @Inject constructor(
         }
         val isOnlyFavourite =
             recipesFilter.find { it.type == Filter.Type.FAVOUTRITE }?.let { true } ?: false
-        return recipesDao.getRecipes(categories, isOnlyFavourite)
+        return RecipeList(recipesDao.getRecipes(categories, isOnlyFavourite))
     }
 
     override suspend fun addRecipe(recipe: Recipe): Long {

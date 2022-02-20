@@ -12,7 +12,7 @@ abstract class RecipesDao {
     abstract suspend fun getRecipes(
         categories: List<String>,
         isOnlyFavourite: Boolean
-    ): List<Recipe>
+    ): List<RecipeInfo>
 
     @Insert
     protected abstract suspend fun addRecipeInfo(recipeInfo: RecipeInfo): Long

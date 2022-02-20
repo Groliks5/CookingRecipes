@@ -17,6 +17,8 @@ android {
         versionName "1.0"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+
+        buildConfigField "String", "THEMEALDB_URL", '"https://www.themealdb.com/api/json/v1/1/"'
     }
 
     buildTypes {
@@ -38,7 +40,7 @@ android {
 }
 
 dependencies {
-    def nav_version = "2.4.0"
+    def nav_version = "2.4.1"
     def room_version = "2.4.1"
     def dagger_version = "2.38.1"
 
@@ -62,4 +64,7 @@ dependencies {
     implementation "androidx.room:room-paging:$room_version"
 
     implementation "io.coil-kt:coil:1.4.0"
+
+    implementation 'com.squareup.retrofit2:retrofit:2.4.0'
+    implementation 'com.squareup.retrofit2:converter-gson:2.3.0'
 }

@@ -18,3 +18,7 @@ data class RecipeInfo(
     @Ignore
     var newPhoto: Bitmap? = null,
 )
+
+data class RecipeList(
+    val recipes: List<RecipeInfo>
+)

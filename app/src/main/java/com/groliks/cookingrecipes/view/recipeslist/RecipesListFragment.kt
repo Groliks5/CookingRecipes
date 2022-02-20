@@ -9,6 +9,8 @@ import androidx.fragment.app.setFragmentResultListener
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.groliks.cookingrecipes.data.filters.model.Filter
+import com.groliks.cookingrecipes.data.recipes.model.RecipeList
+import com.groliks.cookingrecipes.data.util.LoadingStatus
 import com.groliks.cookingrecipes.databinding.FragmentRecipesListBinding
 import com.groliks.cookingrecipes.view.recipeslist.filterslist.FiltersAdapter
 import com.groliks.cookingrecipes.view.recipeslist.recipeslist.RecipesAdapter
@@ -37,8 +39,17 @@ abstract class RecipesListFragment : Fragment() {
         binding.recipes.layoutManager = LinearLayoutManager(requireContext())
         binding.recipes.adapter = recipesAdapter
         viewLifecycleOwner.lifecycleScope.launchWhenStarted {
-            viewModel.recipesList.collect { recipes ->
-                recipesAdapter.submitList(recipes)
+            viewModel.recipesList.collect { loadingStatus ->
+                when (loadingStatus) {
+                    is LoadingStatus.Loading -> {}
+                    is LoadingStatus.Success -> {
+                        val result = loadingStatus.data
+                        if (result is RecipeList) {
+                            recipesAdapter.submitList(result.recipes)
+                        }
+                    }
+                    is LoadingStatus.Error -> {}
+                }
             }
         }
 
