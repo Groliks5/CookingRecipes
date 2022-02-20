@@ -61,6 +61,12 @@ class LocalRecipesListViewModel(
         }
     }
 
+    fun setFavouriteRecipe(recipeId: Long, isFavourite: Boolean) {
+        viewModelScope.launch {
+            repository.setFavouriteRecipe(recipeId, isFavourite)
+        }
+    }
+
     class Factory @Inject constructor(private val repository: RecipesRepository) :
         ViewModelProvider.Factory {
         @Suppress("UNCHECKED_CAST")

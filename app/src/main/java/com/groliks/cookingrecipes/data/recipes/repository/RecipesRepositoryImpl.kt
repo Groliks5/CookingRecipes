@@ -43,4 +43,8 @@ class RecipesRepositoryImpl @Inject constructor(
     override suspend fun deleteRecipe(recipe: RecipeInfo) = withContext(Dispatchers.IO) {
         localRecipesDataSource.deleteRecipe(recipe)
     }
+
+    override suspend fun setFavouriteRecipe(recipeId: Long, isFavourite: Boolean) {
+        localRecipesDataSource.setFavouriteRecipe(recipeId, isFavourite)
+    }
 }

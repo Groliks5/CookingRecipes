@@ -26,6 +26,7 @@ class LocalRecipesListFragment : RecipesListFragment() {
             ::onSelectRecipe,
             ::onEditRecipe,
             ::onDeleteRecipe,
+            ::onFavouriteRecipe,
         )
     }
 
@@ -68,6 +69,10 @@ class LocalRecipesListFragment : RecipesListFragment() {
     private fun onDeleteRecipe(recipe: RecipeInfo) {
         val action = LocalRecipesListFragmentDirections.deleteRecipe(recipe.id, recipe.name)
         findNavController().navigate(action)
+    }
+
+    private fun onFavouriteRecipe(recipe: RecipeInfo) {
+        viewModel.setFavouriteRecipe(recipe.id, recipe.isFavourite)
     }
 
     override fun onSelectFilters() {

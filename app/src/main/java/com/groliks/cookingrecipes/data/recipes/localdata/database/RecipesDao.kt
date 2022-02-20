@@ -58,4 +58,7 @@ abstract class RecipesDao {
 
     @Delete
     abstract suspend fun deleteRecipe(recipeInfo: RecipeInfo)
+
+    @Query("UPDATE recipes SET isFavourite = :isFavourite WHERE id = :recipeId")
+    abstract suspend fun setFavouriteRecipe(recipeId: Long, isFavourite: Boolean)
 }

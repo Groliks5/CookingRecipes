@@ -11,4 +11,5 @@ interface LocalRecipesDataSource {
     suspend fun getRecipe(recipeId: Long): Recipe
     suspend fun updateRecipe(recipe: Recipe)
     suspend fun deleteRecipe(recipe: RecipeInfo)
+    suspend fun setFavouriteRecipe(recipeId: Long, isFavourite: Boolean)
 }

@@ -51,4 +51,8 @@ class LocalRecipesDataSourceImpl @Inject constructor(
         recipesDao.deleteRecipe(recipe)
         photoSaver.deletePhoto(recipe.photoUri)
     }
+
+    override suspend fun setFavouriteRecipe(recipeId: Long, isFavourite: Boolean) {
+        recipesDao.setFavouriteRecipe(recipeId, isFavourite)
+    }
 }
