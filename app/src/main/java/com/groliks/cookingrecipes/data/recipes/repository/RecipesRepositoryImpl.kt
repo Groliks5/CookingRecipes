@@ -4,6 +4,7 @@ import com.groliks.cookingrecipes.data.DataSource
 import com.groliks.cookingrecipes.data.filters.model.Filter
 import com.groliks.cookingrecipes.data.recipes.localdata.LocalRecipesDataSource
 import com.groliks.cookingrecipes.data.recipes.model.Recipe
+import com.groliks.cookingrecipes.data.recipes.model.RecipeInfo
 import com.groliks.cookingrecipes.data.recipes.model.RecipeList
 import com.groliks.cookingrecipes.data.recipes.remotedata.RemoteRecipesDataSource
 import kotlinx.coroutines.Dispatchers
@@ -37,5 +38,9 @@ class RecipesRepositoryImpl @Inject constructor(
 
     override suspend fun updateRecipe(recipe: Recipe) = withContext(Dispatchers.IO) {
         localRecipesDataSource.updateRecipe(recipe)
+    }
+
+    override suspend fun deleteRecipe(recipe: RecipeInfo) = withContext(Dispatchers.IO) {
+        localRecipesDataSource.deleteRecipe(recipe)
     }
 }

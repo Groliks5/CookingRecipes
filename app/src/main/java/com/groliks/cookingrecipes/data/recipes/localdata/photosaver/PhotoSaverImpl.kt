@@ -26,18 +26,23 @@ class PhotoSaverImpl @Inject constructor(
 
     override suspend fun rewritePhoto(oldFileName: String, photo: Bitmap): String {
         checkAvailabilityDirectory()
-        val oldPhoto = File(oldFileName)
-        try {
-            oldPhoto.delete()
-        } catch (e: IOException) {
-            throw IOException("Failed delete old photo.")
-        }
+        deletePhoto(oldFileName)
         return savePhoto(photo)
     }
 
     private fun checkAvailabilityDirectory() {
         if (photoDirectory == null) {
             throw IOException("External files directory is not available")
+        }
+    }
+
+    override suspend fun deletePhoto(fileName: String) {
+        checkAvailabilityDirectory()
+        val photo = File(fileName)
+        try {
+            photo.delete()
+        } catch (e: IOException) {
+            throw IOException("Failed delete photo")
         }
     }
 }

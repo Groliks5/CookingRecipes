@@ -20,6 +20,9 @@
         <action
             android:id="@+id/choose_photo"
             app:destination="@id/photoChoosingDialog" />
+        <action
+            android:id="@+id/action_edit_recipe_to_deleteRecipeDialog"
+            app:destination="@id/deleteRecipeDialog" />
     </fragment>
     <fragment
         android:id="@+id/localRecipeViewFragment"
@@ -31,6 +34,9 @@
         <argument
             android:name="recipeId"
             app:argType="long" />
+        <action
+            android:id="@+id/action_localRecipeViewFragment_to_deleteRecipeDialog"
+            app:destination="@id/deleteRecipeDialog" />
     </fragment>
     <fragment
         android:id="@+id/local_recipes"
@@ -45,6 +51,9 @@
         <action
             android:id="@+id/action_local_recipes_to_selectFiltersFragment"
             app:destination="@id/selectFiltersFragment" />
+        <action
+            android:id="@+id/delete_recipe"
+            app:destination="@id/deleteRecipeDialog" />
     </fragment>
     <fragment
         android:id="@+id/remoteRecipeViewFragment"
@@ -111,4 +120,15 @@
             android:name="data_source"
             app:argType="com.groliks.cookingrecipes.data.DataSource" />
     </fragment>
+    <dialog
+        android:id="@+id/deleteRecipeDialog"
+        android:name="com.groliks.cookingrecipes.view.dialogs.DeleteRecipeDialog"
+        android:label="DeleteRecipeDialog">
+        <argument
+            android:name="recipeId"
+            app:argType="long" />
+        <argument
+            android:name="recipeName"
+            app:argType="string" />
+    </dialog>
 </navigation>

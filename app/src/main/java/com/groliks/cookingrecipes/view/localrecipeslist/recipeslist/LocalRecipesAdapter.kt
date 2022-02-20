@@ -2,12 +2,15 @@ package com.groliks.cookingrecipes.view.localrecipeslist.recipeslist
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.navigation.findNavController
+import com.groliks.cookingrecipes.data.recipes.model.RecipeInfo
 import com.groliks.cookingrecipes.databinding.ItemLocalRecipeBinding
-import com.groliks.cookingrecipes.view.localrecipeslist.LocalRecipesListFragmentDirections
 import com.groliks.cookingrecipes.view.recipeslist.recipeslist.RecipesAdapter
 
-class LocalRecipesAdapter : RecipesAdapter() {
+class LocalRecipesAdapter(
+    private val onSelectRecipe: (RecipeInfo) -> Unit,
+    private val onEditRecipe: (RecipeInfo) -> Unit,
+    private val onDeleteRecipe: (RecipeInfo) -> Unit,
+) : RecipesAdapter() {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecipeViewHolder {
         val inflater = LayoutInflater.from(parent.context)
         val binding = ItemLocalRecipeBinding.inflate(inflater, parent, false)
@@ -19,16 +22,13 @@ class LocalRecipesAdapter : RecipesAdapter() {
 
         init {
             binding.root.setOnClickListener {
-                recipe?.also { recipe ->
-                    val action = LocalRecipesListFragmentDirections.viewRecipe(recipe.id)
-                    binding.root.findNavController().navigate(action)
-                }
+                recipe?.also { recipe -> onSelectRecipe(recipe) }
             }
             binding.editRecipe.setOnClickListener {
-                recipe?.also { recipe ->
-                    val action = LocalRecipesListFragmentDirections.editRecipe(recipe.id)
-                    binding.root.findNavController().navigate(action)
-                }
+                recipe?.also { recipe -> onEditRecipe(recipe) }
+            }
+            binding.deleteRecipe.setOnClickListener {
+                recipe?.also { recipe -> onDeleteRecipe(recipe) }
             }
         }
     }

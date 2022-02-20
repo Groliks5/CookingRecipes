@@ -5,4 +5,5 @@ import android.graphics.Bitmap
 interface PhotoSaver {
     suspend fun savePhoto(photo: Bitmap): String
     suspend fun rewritePhoto(oldFileName: String, photo: Bitmap): String
+    suspend fun deletePhoto(fileName: String)
 }

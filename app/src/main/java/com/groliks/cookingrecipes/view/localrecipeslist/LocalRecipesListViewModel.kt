@@ -6,6 +6,7 @@ import androidx.lifecycle.viewModelScope
 import com.groliks.cookingrecipes.data.DataSource
 import com.groliks.cookingrecipes.data.recipes.model.Recipe
 import com.groliks.cookingrecipes.data.recipes.model.RecipeInfo
+import com.groliks.cookingrecipes.data.recipes.model.RecipeList
 import com.groliks.cookingrecipes.data.recipes.repository.RecipesRepository
 import com.groliks.cookingrecipes.data.util.LoadingStatus
 import com.groliks.cookingrecipes.view.recipeslist.RecipesListViewModel
@@ -45,6 +46,19 @@ class LocalRecipesListViewModel(
             idState.emit(id)
         }
         return idState
+    }
+
+    fun deleteRecipe(recipeId: Long) {
+        viewModelScope.launch {
+            (recipesList.value as? LoadingStatus.Success)?.also {
+                val recipesList = it.data as RecipeList
+                val recipe = recipesList.recipes.find { it.id == recipeId }
+                recipe?.also {
+                    repository.deleteRecipe(it)
+                    updateRecipesList()
+                }
+            }
+        }
     }
 
     class Factory @Inject constructor(private val repository: RecipesRepository) :

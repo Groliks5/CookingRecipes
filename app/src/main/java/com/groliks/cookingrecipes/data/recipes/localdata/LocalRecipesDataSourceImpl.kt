@@ -4,6 +4,7 @@ import com.groliks.cookingrecipes.data.filters.model.Filter
 import com.groliks.cookingrecipes.data.recipes.localdata.database.RecipesDao
 import com.groliks.cookingrecipes.data.recipes.localdata.photosaver.PhotoSaver
 import com.groliks.cookingrecipes.data.recipes.model.Recipe
+import com.groliks.cookingrecipes.data.recipes.model.RecipeInfo
 import com.groliks.cookingrecipes.data.recipes.model.RecipeList
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -44,5 +45,10 @@ class LocalRecipesDataSourceImpl @Inject constructor(
             recipe.info.photoUri = newPhotoUri
         }
         recipesDao.updateRecipe(recipe)
+    }
+
+    override suspend fun deleteRecipe(recipe: RecipeInfo) {
+        recipesDao.deleteRecipe(recipe)
+        photoSaver.deletePhoto(recipe.photoUri)
     }
 }

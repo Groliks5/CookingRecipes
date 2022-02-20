@@ -55,4 +55,7 @@ abstract class RecipesDao {
         val ingredientsIds = recipe.ingredients.map { it.id }
         deleteOldIngredients(ingredientsIds)
     }
+
+    @Delete
+    abstract suspend fun deleteRecipe(recipeInfo: RecipeInfo)
 }
