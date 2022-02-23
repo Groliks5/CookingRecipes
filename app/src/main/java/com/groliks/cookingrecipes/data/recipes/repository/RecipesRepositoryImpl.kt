@@ -33,7 +33,10 @@ class RecipesRepositoryImpl @Inject constructor(
 
     override suspend fun getRecipe(dataSource: DataSource, recipeId: Long): Recipe =
         withContext(Dispatchers.IO) {
-            localRecipesDataSource.getRecipe(recipeId)
+            when (dataSource) {
+                DataSource.LOCAL -> localRecipesDataSource.getRecipe(recipeId)
+                DataSource.REMOTE -> remoteRecipesRecipesDataSource.getRecipe(recipeId)
+            }
         }
 
     override suspend fun updateRecipe(recipe: Recipe) = withContext(Dispatchers.IO) {

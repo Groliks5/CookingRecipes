@@ -62,13 +62,16 @@
         <action
             android:id="@+id/action_remoteRecipeViewFragment_to_localRecipeViewFragment"
             app:destination="@id/localRecipeViewFragment" />
+        <argument
+            android:name="recipeId"
+            app:argType="long" />
     </fragment>
     <fragment
         android:id="@+id/remote_recipes"
         android:name="com.groliks.cookingrecipes.view.remoterecipeslist.RemoteRecipesListFragment"
         android:label="RemoteRecipesListFragment">
         <action
-            android:id="@+id/action_remoteRecipesListFragment_to_remoteRecipeViewFragment"
+            android:id="@+id/view_recipe"
             app:destination="@id/remoteRecipeViewFragment" />
         <action
             android:id="@+id/action_remote_recipes_to_selectFiltersFragment"
