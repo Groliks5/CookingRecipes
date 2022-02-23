@@ -5,6 +5,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import com.groliks.cookingrecipes.data.DataSource
 import com.groliks.cookingrecipes.data.filters.repository.FiltersRepository
+import com.groliks.cookingrecipes.data.recipes.model.RecipeInfo
 import com.groliks.cookingrecipes.data.recipes.repository.RecipesRepository
 import com.groliks.cookingrecipes.data.util.LoadingStatus
 import com.groliks.cookingrecipes.view.recipeslist.RecipesListViewModel
@@ -17,8 +18,11 @@ class RemoteRecipesListViewModel(
     private val recipesRepository: RecipesRepository,
     private val filtersRepository: FiltersRepository,
 ) : RecipesListViewModel() {
-    private val _recipesList = MutableStateFlow<LoadingStatus>(LoadingStatus.Loading)
+    private val _recipesList = MutableStateFlow<LoadingStatus>(LoadingStatus.None)
     override val recipesList = _recipesList.asStateFlow()
+
+    private val _downloadingRecipeStatus = MutableStateFlow<LoadingStatus>(LoadingStatus.None)
+    val downloadingRecipeStatus = _downloadingRecipeStatus.asStateFlow()
 
     init {
         viewModelScope.launch {
@@ -27,6 +31,7 @@ class RemoteRecipesListViewModel(
     }
 
     override suspend fun updateRecipesList() {
+        _recipesList.emit(LoadingStatus.Loading())
         val result = try {
             val recipes = recipesRepository.getRecipes(DataSource.REMOTE, filters.value)
             LoadingStatus.Success(recipes)
@@ -34,6 +39,22 @@ class RemoteRecipesListViewModel(
             LoadingStatus.Error(e.message.toString())
         }
         _recipesList.emit(result)
+    }
+
+    fun downloadRecipe(recipeInfo: RecipeInfo) {
+        viewModelScope.launch {
+            _downloadingRecipeStatus.emit(LoadingStatus.Loading("Downloading recipe: ${recipeInfo.name}"))
+            try {
+                recipesRepository.downloadRecipe(recipeInfo)
+                _downloadingRecipeStatus.emit(
+                    LoadingStatus.Success(
+                        message = "Recipe ${recipeInfo.name} downloaded"
+                    )
+                )
+            } catch (e: Exception) {
+                _downloadingRecipeStatus.emit(LoadingStatus.Error(e.message.toString()))
+            }
+        }
     }
 
     class Factory @Inject constructor(

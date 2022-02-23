@@ -18,7 +18,7 @@ class LocalRecipeViewModel(
     private val recipesRepository: RecipesRepository,
     private val recipeId: Long,
 ) : RecipeViewModel() {
-    private val _recipe = MutableStateFlow<LoadingStatus>(LoadingStatus.Loading)
+    private val _recipe = MutableStateFlow<LoadingStatus>(LoadingStatus.Loading())
     override val recipe = _recipe.asStateFlow()
 
     init {

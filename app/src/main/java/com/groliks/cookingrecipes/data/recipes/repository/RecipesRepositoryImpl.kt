@@ -1,5 +1,9 @@
 package com.groliks.cookingrecipes.data.recipes.repository
 
+import android.content.Context
+import androidx.core.graphics.drawable.toBitmap
+import coil.imageLoader
+import coil.request.ImageRequest
 import com.groliks.cookingrecipes.data.DataSource
 import com.groliks.cookingrecipes.data.filters.model.Filter
 import com.groliks.cookingrecipes.data.recipes.localdata.LocalRecipesDataSource
@@ -15,7 +19,8 @@ import javax.inject.Singleton
 @Singleton
 class RecipesRepositoryImpl @Inject constructor(
     private val localRecipesDataSource: LocalRecipesDataSource,
-    private val remoteRecipesRecipesDataSource: RemoteRecipesDataSource
+    private val remoteRecipesRecipesDataSource: RemoteRecipesDataSource,
+    private val appContext: Context,
 ) : RecipesRepository {
     override suspend fun getRecipes(
         dataSource: DataSource,
@@ -47,7 +52,27 @@ class RecipesRepositoryImpl @Inject constructor(
         localRecipesDataSource.deleteRecipe(recipe)
     }
 
-    override suspend fun setFavouriteRecipe(recipeId: Long, isFavourite: Boolean) {
-        localRecipesDataSource.setFavouriteRecipe(recipeId, isFavourite)
-    }
+    override suspend fun setFavouriteRecipe(recipeId: Long, isFavourite: Boolean) =
+        withContext(Dispatchers.IO) {
+            localRecipesDataSource.setFavouriteRecipe(recipeId, isFavourite)
+        }
+
+    override suspend fun downloadRecipe(recipeInfo: RecipeInfo): Long =
+        withContext(Dispatchers.IO) {
+            val recipe = remoteRecipesRecipesDataSource.getRecipe(recipeInfo.id)
+            recipe.info.id = 0
+            val photoRequest = ImageRequest.Builder(appContext)
+                .data(recipe.info.photoUri)
+                .target {
+                    recipe.info.newPhoto = it.toBitmap()
+                }
+                .build()
+            appContext.imageLoader.execute(photoRequest)
+            recipe.info.photoUri = ""
+            recipe.ingredients.forEach {
+                it.id = 0
+                it.recipeId = 0
+            }
+            localRecipesDataSource.addRecipe(recipe)
+        }
 }

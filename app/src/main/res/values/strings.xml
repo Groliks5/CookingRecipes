@@ -46,4 +46,6 @@
     <string name="favoutrite">Favourites</string>
     <string name="delete_recipe_warning">Are you sure you want to delete recipe: %1$s?</string>
     <string name="ingredient">%1$s%2$s%3$s</string>
+    <string name="download_recipe">Download recipe</string>
+    <string name="download">Download</string>
 </resources>

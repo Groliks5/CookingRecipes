@@ -51,6 +51,10 @@
         <item name="iconTint">@color/red</item>
     </style>
 
+    <style name="DownloadRecipeButtonStyle" parent="RecipeControlButtonStyle">
+        <item name="iconTint">@color/black</item>
+    </style>
+
     <style name="RecipePhotoStyle">
         <item name="android:background">@color/grey</item>
     </style>

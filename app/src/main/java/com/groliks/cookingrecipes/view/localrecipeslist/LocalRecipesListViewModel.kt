@@ -19,7 +19,7 @@ import javax.inject.Inject
 class LocalRecipesListViewModel(
     private val repository: RecipesRepository
 ) : RecipesListViewModel() {
-    private val _recipesList = MutableStateFlow<LoadingStatus>(LoadingStatus.Loading)
+    private val _recipesList = MutableStateFlow<LoadingStatus>(LoadingStatus.Loading())
     override val recipesList = _recipesList.asStateFlow()
 
     init {

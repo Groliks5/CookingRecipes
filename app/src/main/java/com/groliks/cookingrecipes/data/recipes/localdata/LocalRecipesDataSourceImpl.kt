@@ -26,6 +26,11 @@ class LocalRecipesDataSourceImpl @Inject constructor(
     }
 
     override suspend fun addRecipe(recipe: Recipe): Long {
+        val photo = recipe.info.newPhoto
+        if (photo != null) {
+            val photoUri = photoSaver.savePhoto(photo)
+            recipe.info.photoUri = photoUri
+        }
         return recipesDao.addRecipe(recipe)
     }
 

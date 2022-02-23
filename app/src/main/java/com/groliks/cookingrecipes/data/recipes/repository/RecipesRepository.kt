@@ -13,4 +13,5 @@ interface RecipesRepository {
     suspend fun updateRecipe(recipe: Recipe)
     suspend fun deleteRecipe(recipe: RecipeInfo)
     suspend fun setFavouriteRecipe(recipeId: Long, isFavourite: Boolean)
+    suspend fun downloadRecipe(recipeInfo: RecipeInfo): Long
 }

@@ -60,7 +60,7 @@
         android:name="com.groliks.cookingrecipes.view.remoterecipeview.RemoteRecipeViewFragment"
         android:label="RemoteRecipeViewFragment">
         <action
-            android:id="@+id/action_remoteRecipeViewFragment_to_localRecipeViewFragment"
+            android:id="@+id/download_recipe"
             app:destination="@id/localRecipeViewFragment" />
         <argument
             android:name="recipeId"
