@@ -74,7 +74,7 @@
             android:id="@+id/view_recipe"
             app:destination="@id/remoteRecipeViewFragment" />
         <action
-            android:id="@+id/action_remote_recipes_to_selectFiltersFragment"
+            android:id="@+id/select_filter"
             app:destination="@id/selectFiltersFragment" />
     </fragment>
     <fragment

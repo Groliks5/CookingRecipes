@@ -39,6 +39,7 @@ class RemoteRecipesListViewModel(
             LoadingStatus.Error(e.message.toString())
         }
         _recipesList.emit(result)
+        _recipesList.emit(LoadingStatus.None)
     }
 
     fun downloadRecipe(recipeInfo: RecipeInfo) {

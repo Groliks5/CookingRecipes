@@ -9,6 +9,7 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.groliks.cookingrecipes.appComponent
+import com.groliks.cookingrecipes.data.DataSource
 import com.groliks.cookingrecipes.data.recipes.model.RecipeInfo
 import com.groliks.cookingrecipes.data.util.LoadingStatus
 import com.groliks.cookingrecipes.view.recipeslist.RecipesListFragment
@@ -64,6 +65,10 @@ class RemoteRecipesListFragment : RecipesListFragment() {
     }
 
     override fun onSelectFilters() {
-        TODO("Not yet implemented")
+        val action = RemoteRecipesListFragmentDirections.selectFilter(
+            viewModel.filters.value.toTypedArray(),
+            DataSource.REMOTE
+        )
+        findNavController().navigate(action)
     }
 }
