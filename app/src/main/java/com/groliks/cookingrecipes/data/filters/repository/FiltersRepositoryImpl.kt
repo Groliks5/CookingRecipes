@@ -1,9 +1,9 @@
 package com.groliks.cookingrecipes.data.filters.repository
 
-import com.groliks.cookingrecipes.data.DataSource
 import com.groliks.cookingrecipes.data.filters.localdata.LocalFiltersDataSource
 import com.groliks.cookingrecipes.data.filters.model.Filter
 import com.groliks.cookingrecipes.data.filters.remotedata.RemoteFiltersDataSource
+import com.groliks.cookingrecipes.data.util.DataSource
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import javax.inject.Inject

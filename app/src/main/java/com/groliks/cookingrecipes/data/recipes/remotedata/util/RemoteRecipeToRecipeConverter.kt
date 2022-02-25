@@ -3,14 +3,14 @@ package com.groliks.cookingrecipes.data.recipes.remotedata.util
 import com.groliks.cookingrecipes.data.recipes.model.Ingredient
 import com.groliks.cookingrecipes.data.recipes.model.Recipe
 import com.groliks.cookingrecipes.data.recipes.model.RecipeInfo
-import com.groliks.cookingrecipes.data.recipes.model.RecipeList
-import com.groliks.cookingrecipes.data.recipes.remotedata.retrofit.RemoteRecipeInfoList
+import com.groliks.cookingrecipes.data.recipes.model.RecipesInfoList
+import com.groliks.cookingrecipes.data.recipes.remotedata.retrofit.RemoteRecipeInfo
 
 class RemoteRecipeToRecipeConverter {
     companion object {
-        fun convertRemoteRecipesInfo(remoteRecipesInfo: RemoteRecipeInfoList): RecipeList {
+        fun convertRemoteRecipesInfo(remoteRecipesInfo: List<RemoteRecipeInfo>): RecipesInfoList {
             val recipes = mutableListOf<RecipeInfo>()
-            for (recipe in remoteRecipesInfo.recipes) {
+            for (recipe in remoteRecipesInfo) {
                 val recipeInfo = RecipeInfo(
                     name = recipe.name,
                     photoUri = recipe.photoUri,
@@ -19,7 +19,7 @@ class RemoteRecipeToRecipeConverter {
                 )
                 recipes.add(recipeInfo)
             }
-            return RecipeList(recipes)
+            return RecipesInfoList(recipes)
         }
 
         fun convertRemoteRecipe(remoteRecipe: Map<String, String?>): Recipe {
@@ -29,18 +29,8 @@ class RemoteRecipeToRecipeConverter {
             val recipePhotoUri = remoteRecipe["strMealThumb"]!!
             val recipeDescription = "Recipe from the meal DB"
             val recipeCategory = remoteRecipe["strCategory"]!!
-            val ingredientsNames = remoteRecipe.filterKeys {
-                it.commonPrefixWith("strIngredient") == "strIngredient"
-            }
-                .values
-                .filterNotNull()
-                .filter { it != "" }
-            val ingredientsMeasures = remoteRecipe.filterKeys {
-                it.commonPrefixWith("strMeasure") == "strMeasure"
-            }
-                .values
-                .filterNotNull()
-                .filter { it != "" }
+            val ingredientsNames = getIngredientValues(remoteRecipe, "strIngredient")
+            val ingredientsMeasures = getIngredientValues(remoteRecipe, "strMeasure")
 
             val recipeInfo = RecipeInfo(
                 id = recipeId,
@@ -60,6 +50,18 @@ class RemoteRecipeToRecipeConverter {
             }
 
             return Recipe(recipeInfo, ingredients)
+        }
+
+        private fun getIngredientValues(
+            remoteRecipeInfo: Map<String, String?>,
+            key: String
+        ): List<String> {
+            return remoteRecipeInfo.filterKeys {
+                it.commonPrefixWith(key) == key
+            }
+                .values
+                .filterNotNull()
+                .filter { it != "" }
         }
     }
 }

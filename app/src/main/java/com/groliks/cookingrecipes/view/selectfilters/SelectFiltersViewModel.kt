@@ -3,9 +3,9 @@ package com.groliks.cookingrecipes.view.selectfilters
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
-import com.groliks.cookingrecipes.data.DataSource
 import com.groliks.cookingrecipes.data.filters.model.Filter
 import com.groliks.cookingrecipes.data.filters.repository.FiltersRepository
+import com.groliks.cookingrecipes.data.util.DataSource
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject

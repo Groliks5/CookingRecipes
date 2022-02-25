@@ -19,6 +19,6 @@ data class RecipeInfo(
     var newPhoto: Bitmap? = null,
 )
 
-data class RecipeList(
+data class RecipesInfoList(
     val recipes: List<RecipeInfo>
 )

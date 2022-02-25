@@ -3,10 +3,11 @@ package com.groliks.cookingrecipes.data.recipes.remotedata
 import com.groliks.cookingrecipes.data.filters.model.Filter
 import com.groliks.cookingrecipes.data.recipes.model.Recipe
 import com.groliks.cookingrecipes.data.recipes.model.RecipeInfo
-import com.groliks.cookingrecipes.data.recipes.model.RecipeList
+import com.groliks.cookingrecipes.data.recipes.model.RecipesInfoList
 import com.groliks.cookingrecipes.data.recipes.remotedata.retrofit.RecipesApiService
-import com.groliks.cookingrecipes.data.recipes.remotedata.retrofit.RemoteRecipeInfoList
+import com.groliks.cookingrecipes.data.recipes.remotedata.retrofit.RemoteRecipeInfo
 import com.groliks.cookingrecipes.data.recipes.remotedata.util.RemoteRecipeToRecipeConverter
+import okio.IOException
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -14,24 +15,45 @@ import javax.inject.Singleton
 class RemoteRecipesDataSourceImpl @Inject constructor(
     private val recipesApiService: RecipesApiService,
 ) : RemoteRecipesDataSource {
-    override suspend fun getRecipes(filters: List<Filter>): RecipeList {
-        val recipes = mutableListOf<RecipeInfo>()
-        for (filter in filters) {
-            val remoteRecipes = when (filter.type) {
-                Filter.Type.CATEGORY -> recipesApiService.getRecipesWithCategory(filter.name)
-                    .execute().body()!!
-                else -> RemoteRecipeInfoList()
-            }
-            val convertedRecipes =
-                RemoteRecipeToRecipeConverter.convertRemoteRecipesInfo(remoteRecipes)
-            recipes.addAll(convertedRecipes.recipes)
+    override suspend fun getRecipes(filters: List<Filter>): RecipesInfoList {
+        if (filters.isEmpty()) {
+            throw IllegalArgumentException("To get recipes, you need to specify at least 1 filter")
         }
-        return RecipeList(recipes.distinct())
+
+        val remoteRecipesInfoByFilter = buildMap<String, MutableList<RemoteRecipeInfo>> {
+            put(Filter.Type.CATEGORY.name, mutableListOf())
+            put(Filter.Type.AREA.name, mutableListOf())
+        }
+
+        for (filter in filters) {
+            val requestResult = when (filter.type) {
+                Filter.Type.CATEGORY -> recipesApiService.getRecipesWithCategory(filter.name)
+                Filter.Type.AREA -> recipesApiService.getRecipesWithArea(filter.name)
+                else -> throw IllegalArgumentException("Unsupported filter type")
+            }
+            remoteRecipesInfoByFilter[filter.type.name]?.addAll(requestResult.recipes)
+        }
+
+        val remoteRecipesInfo = remoteRecipesInfoByFilter.map { remoteRecipesInfo ->
+            remoteRecipesInfo.value.distinctBy { it.id }.toSet()
+        }
+            .filter { it.isNotEmpty() }
+            .reduce { acc, cur ->
+                acc.intersect(cur)
+            }
+            .toList()
+
+        val recipesInfo = mutableListOf<RecipeInfo>()
+        val convertedRecipes =
+            RemoteRecipeToRecipeConverter.convertRemoteRecipesInfo(remoteRecipesInfo)
+        recipesInfo.addAll(convertedRecipes.recipes)
+        return RecipesInfoList(recipesInfo)
     }
 
     override suspend fun getRecipe(recipeId: Long): Recipe {
-        val requestResult =
-            recipesApiService.getRecipe(recipeId.toInt()).execute().body()!!.recipes[0]
-        return RemoteRecipeToRecipeConverter.convertRemoteRecipe(requestResult)
+        val remoteRecipe =
+            recipesApiService.getRecipe(recipeId.toInt()).recipes.firstOrNull()
+                ?: throw IOException("Recipe with id=$recipeId is not found")
+        return RemoteRecipeToRecipeConverter.convertRemoteRecipe(remoteRecipe)
     }
 }

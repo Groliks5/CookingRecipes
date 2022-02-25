@@ -8,8 +8,8 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.groliks.cookingrecipes.appComponent
-import com.groliks.cookingrecipes.data.DataSource
 import com.groliks.cookingrecipes.data.recipes.model.RecipeInfo
+import com.groliks.cookingrecipes.data.util.DataSource
 import com.groliks.cookingrecipes.view.dialogs.DeleteRecipeDialog
 import com.groliks.cookingrecipes.view.localrecipeslist.recipeslist.LocalRecipesAdapter
 import com.groliks.cookingrecipes.view.recipeslist.RecipesListFragment

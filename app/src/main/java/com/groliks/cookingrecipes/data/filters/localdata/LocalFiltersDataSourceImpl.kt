@@ -12,10 +12,14 @@ class LocalFiltersDataSourceImpl @Inject constructor(
     @Named("favourite_filter_name") private val favouriteFilterName: String,
 ) : LocalFiltersDataSource {
     override suspend fun getAvailableFilters(): List<Filter> {
-        val availableCategories = filtersDao.getAvailableCategories().toSortedSet().toList()
+        val availableCategories = filtersDao.getAvailableCategories()
+            .distinct()
+            .filter { it.isNotBlank() }
         val filters =
-            availableCategories.map { Filter(Filter.Type.CATEGORY, it, false) }.toMutableList()
-        val onlyFavouritesFilter = Filter(Filter.Type.FAVOUTRITE, favouriteFilterName, false)
+            availableCategories.map {
+                Filter(Filter.Type.CATEGORY, it, false)
+            }.toMutableList()
+        val onlyFavouritesFilter = Filter(Filter.Type.FAVOURITE, favouriteFilterName)
         filters.add(onlyFavouritesFilter)
         return filters
     }

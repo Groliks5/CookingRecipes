@@ -8,17 +8,27 @@ class RemoteFiltersDataSourceImpl @Inject constructor(
     private val filtersApiService: FiltersApiService,
 ) : RemoteFiltersDataSource {
     override suspend fun getAvailableFilters(): List<Filter> {
-        val remoteFilters =
-            filtersApiService.getAvailableCategories().execute()
-                .body()!!.filters
+        val categoryFilters = filtersApiService.getAvailableCategories().filters
+        val areaFilters = filtersApiService.getAvailableAreas().filters
+        val remoteFilters = categoryFilters + areaFilters
+
         val filters = mutableListOf<Filter>()
         for (remoteFilter in remoteFilters) {
-            val filter = Filter(
-                type = Filter.Type.CATEGORY,
-                name = remoteFilter["strCategory"]!!
-            )
-            filters.add(filter)
+            val filterKey = remoteFilter.keys.first()
+            val filterType = when (filterKey) {
+                "strCategory" -> Filter.Type.CATEGORY
+                "strArea" -> Filter.Type.AREA
+                else -> null
+            }
+            filterType?.also {
+                val filter = Filter(
+                    type = it,
+                    name = remoteFilter[filterKey]!!
+                )
+                filters.add(filter)
+            }
         }
+
         return filters
     }
 }

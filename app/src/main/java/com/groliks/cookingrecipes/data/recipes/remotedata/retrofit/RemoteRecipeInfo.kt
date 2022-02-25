@@ -13,5 +13,5 @@ data class RemoteRecipeInfo(
 
 data class RemoteRecipeInfoList(
     @SerializedName("meals")
-    val recipes: List<RemoteRecipeInfo> = listOf()
+    val recipes: List<RemoteRecipeInfo>
 )

@@ -4,5 +4,5 @@ import com.google.gson.annotations.SerializedName
 
 data class RemoteRecipes(
     @SerializedName("meals")
-    val recipes: List<Map<String, String?>> = listOf()
+    val recipes: List<Map<String, String?>>
 )

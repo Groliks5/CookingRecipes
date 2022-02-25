@@ -27,7 +27,7 @@
                 app:argType="com.groliks.cookingrecipes.data.filters.model.Filter[]" />
             <argument
                 android:name="data_source"
-                app:argType="com.groliks.cookingrecipes.data.DataSource" />
+                app:argType="com.groliks.cookingrecipes.data.util.DataSource" />
         </action>
     </fragment>
     <fragment

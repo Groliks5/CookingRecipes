@@ -12,6 +12,7 @@ data class Filter(
 ) : Parcelable {
     enum class Type(val nameId: Int) {
         CATEGORY(R.string.category),
-        FAVOUTRITE(R.string.favourites)
+        FAVOURITE(R.string.favourites),
+        AREA(R.string.area),
     }
 }

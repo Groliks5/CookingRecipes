@@ -3,10 +3,10 @@ package com.groliks.cookingrecipes.view.remoterecipeslist
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
-import com.groliks.cookingrecipes.data.DataSource
 import com.groliks.cookingrecipes.data.filters.repository.FiltersRepository
 import com.groliks.cookingrecipes.data.recipes.model.RecipeInfo
 import com.groliks.cookingrecipes.data.recipes.repository.RecipesRepository
+import com.groliks.cookingrecipes.data.util.DataSource
 import com.groliks.cookingrecipes.data.util.LoadingStatus
 import com.groliks.cookingrecipes.view.recipeslist.RecipesListViewModel
 import kotlinx.coroutines.flow.MutableStateFlow

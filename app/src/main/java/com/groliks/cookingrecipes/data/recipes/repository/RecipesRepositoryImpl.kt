@@ -4,13 +4,13 @@ import android.content.Context
 import androidx.core.graphics.drawable.toBitmap
 import coil.imageLoader
 import coil.request.ImageRequest
-import com.groliks.cookingrecipes.data.DataSource
 import com.groliks.cookingrecipes.data.filters.model.Filter
 import com.groliks.cookingrecipes.data.recipes.localdata.LocalRecipesDataSource
 import com.groliks.cookingrecipes.data.recipes.model.Recipe
 import com.groliks.cookingrecipes.data.recipes.model.RecipeInfo
-import com.groliks.cookingrecipes.data.recipes.model.RecipeList
+import com.groliks.cookingrecipes.data.recipes.model.RecipesInfoList
 import com.groliks.cookingrecipes.data.recipes.remotedata.RemoteRecipesDataSource
+import com.groliks.cookingrecipes.data.util.DataSource
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
@@ -25,7 +25,7 @@ class RecipesRepositoryImpl @Inject constructor(
     override suspend fun getRecipes(
         dataSource: DataSource,
         recipesFilter: List<Filter>
-    ): RecipeList = withContext(Dispatchers.IO) {
+    ): RecipesInfoList = withContext(Dispatchers.IO) {
         when (dataSource) {
             DataSource.LOCAL -> localRecipesDataSource.getRecipes(recipesFilter)
             DataSource.REMOTE -> remoteRecipesRecipesDataSource.getRecipes(recipesFilter)

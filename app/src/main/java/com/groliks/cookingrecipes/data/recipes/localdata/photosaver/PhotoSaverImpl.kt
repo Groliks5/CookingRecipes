@@ -14,18 +14,20 @@ class PhotoSaverImpl @Inject constructor(
 ) : PhotoSaver {
     override suspend fun savePhoto(photo: Bitmap): String {
         checkAvailabilityDirectory()
-        val newPhotoName = File(photoDirectory, "${System.currentTimeMillis()}.jpg")
+
+        val newPhotoFile = File(photoDirectory, "${System.currentTimeMillis()}.jpg")
         try {
-            val outputStream = FileOutputStream(newPhotoName)
-            photo.compress(Bitmap.CompressFormat.JPEG, 100, outputStream)
+            FileOutputStream(newPhotoFile).use {
+                photo.compress(Bitmap.CompressFormat.JPEG, 100, it)
+            }
         } catch (e: IOException) {
             throw IOException("Failed save new photo.")
         }
-        return newPhotoName.toUri().toString()
+
+        return newPhotoFile.toUri().toString()
     }
 
     override suspend fun rewritePhoto(oldFileName: String, photo: Bitmap): String {
-        checkAvailabilityDirectory()
         deletePhoto(oldFileName)
         return savePhoto(photo)
     }

@@ -3,11 +3,11 @@ package com.groliks.cookingrecipes.view.localrecipeslist
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
-import com.groliks.cookingrecipes.data.DataSource
 import com.groliks.cookingrecipes.data.recipes.model.Recipe
 import com.groliks.cookingrecipes.data.recipes.model.RecipeInfo
-import com.groliks.cookingrecipes.data.recipes.model.RecipeList
+import com.groliks.cookingrecipes.data.recipes.model.RecipesInfoList
 import com.groliks.cookingrecipes.data.recipes.repository.RecipesRepository
+import com.groliks.cookingrecipes.data.util.DataSource
 import com.groliks.cookingrecipes.data.util.LoadingStatus
 import com.groliks.cookingrecipes.view.recipeslist.RecipesListViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -51,7 +51,7 @@ class LocalRecipesListViewModel(
     fun deleteRecipe(recipeId: Long) {
         viewModelScope.launch {
             (recipesList.value as? LoadingStatus.Success)?.also {
-                val recipesList = it.data as RecipeList
+                val recipesList = it.data as RecipesInfoList
                 val recipe = recipesList.recipes.find { it.id == recipeId }
                 recipe?.also {
                     repository.deleteRecipe(it)

@@ -7,9 +7,15 @@ import com.groliks.cookingrecipes.data.recipes.model.RecipeInfo
 
 @Dao
 abstract class RecipesDao {
-    @Transaction
-    @Query("SELECT * FROM recipes WHERE category LIKE (:categories) AND (isFavourite = 1 OR isFavourite = :isOnlyFavourite)")
-    abstract suspend fun getRecipes(
+    @Query(
+        """
+            SELECT * FROM recipes 
+            WHERE (:isHaveCategoryFilters IS 0 OR category IN (:categories))
+            AND (isFavourite = 1 OR isFavourite = :isOnlyFavourite)
+            """
+    )
+    abstract suspend fun getRecipesInfo(
+        isHaveCategoryFilters: Boolean,
         categories: List<String>,
         isOnlyFavourite: Boolean
     ): List<RecipeInfo>

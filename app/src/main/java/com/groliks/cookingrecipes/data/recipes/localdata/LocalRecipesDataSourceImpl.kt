@@ -5,7 +5,7 @@ import com.groliks.cookingrecipes.data.recipes.localdata.database.RecipesDao
 import com.groliks.cookingrecipes.data.recipes.localdata.photosaver.PhotoSaver
 import com.groliks.cookingrecipes.data.recipes.model.Recipe
 import com.groliks.cookingrecipes.data.recipes.model.RecipeInfo
-import com.groliks.cookingrecipes.data.recipes.model.RecipeList
+import com.groliks.cookingrecipes.data.recipes.model.RecipesInfoList
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -14,15 +14,18 @@ class LocalRecipesDataSourceImpl @Inject constructor(
     private val recipesDao: RecipesDao,
     private val photoSaver: PhotoSaver,
 ) : LocalRecipesDataSource {
-    override suspend fun getRecipes(recipesFilter: List<Filter>): RecipeList {
-        var categories = recipesFilter.filter { it.type == Filter.Type.CATEGORY }
+    override suspend fun getRecipes(recipesFilter: List<Filter>): RecipesInfoList {
+        val categoryFilters = recipesFilter.filter { it.type == Filter.Type.CATEGORY }
             .map { it.name }
-        if (categories.isEmpty()) {
-            categories = listOf("%")
-        }
-        val isOnlyFavourite =
-            recipesFilter.find { it.type == Filter.Type.FAVOUTRITE }?.let { true } ?: false
-        return RecipeList(recipesDao.getRecipes(categories, isOnlyFavourite))
+        val isOnlyFavouriteFilter =
+            recipesFilter.find { it.type == Filter.Type.FAVOURITE }?.let { true } ?: false
+
+        val recipesInfo = recipesDao.getRecipesInfo(
+            categoryFilters.isNotEmpty(),
+            categoryFilters,
+            isOnlyFavouriteFilter
+        )
+        return RecipesInfoList(recipesInfo)
     }
 
     override suspend fun addRecipe(recipe: Recipe): Long {
@@ -53,8 +56,8 @@ class LocalRecipesDataSourceImpl @Inject constructor(
     }
 
     override suspend fun deleteRecipe(recipe: RecipeInfo) {
-        recipesDao.deleteRecipe(recipe)
         photoSaver.deletePhoto(recipe.photoUri)
+        recipesDao.deleteRecipe(recipe)
     }
 
     override suspend fun setFavouriteRecipe(recipeId: Long, isFavourite: Boolean) {
