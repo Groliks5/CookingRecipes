@@ -9,7 +9,6 @@ import android.view.View
 import android.widget.Toast
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
-import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.groliks.cookingrecipes.R
 import com.groliks.cookingrecipes.appComponent
@@ -42,18 +41,12 @@ class RemoteRecipeViewFragment : RecipeViewFragment() {
             viewModel.downloadingRecipeStatus.collect { loadingStatus ->
                 when (loadingStatus) {
                     is LoadingStatus.None -> {}
-                    is LoadingStatus.Loading, is LoadingStatus.Error -> {
+                    is LoadingStatus.Loading, is LoadingStatus.Error, is LoadingStatus.Success -> {
                         Toast.makeText(
                             requireActivity(),
                             loadingStatus.message,
                             Toast.LENGTH_SHORT
                         ).show()
-                    }
-                    is LoadingStatus.Success -> {
-                        val recipeId = loadingStatus.data as Long
-                        val action = RemoteRecipeViewFragmentDirections.downloadRecipe(recipeId)
-                        findNavController().navigate(action)
-
                     }
                 }
             }

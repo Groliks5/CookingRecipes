@@ -42,7 +42,10 @@ class LocalRecipesListFragment : RecipesListFragment() {
             viewLifecycleOwner.lifecycleScope.launchWhenStarted {
                 viewModel.createRecipe().collect { recipeId ->
                     if (recipeId != null) {
-                        val action = LocalRecipesListFragmentDirections.editRecipe(recipeId)
+                        val action =
+                            LocalRecipesListFragmentDirections.actionLocalRecipesListFragmentToEditRecipeFragment(
+                                recipeId
+                            )
                         findNavController().navigate(action)
                     }
                 }
@@ -57,17 +60,27 @@ class LocalRecipesListFragment : RecipesListFragment() {
     }
 
     private fun onSelectRecipe(recipe: RecipeInfo) {
-        val action = LocalRecipesListFragmentDirections.viewRecipe(recipe.id)
+        val action =
+            LocalRecipesListFragmentDirections.actionLocalRecipesListFragmentToLocalRecipeViewFragment(
+                recipe.id
+            )
         findNavController().navigate(action)
     }
 
     private fun onEditRecipe(recipe: RecipeInfo) {
-        val action = LocalRecipesListFragmentDirections.editRecipe(recipe.id)
+        val action =
+            LocalRecipesListFragmentDirections.actionLocalRecipesListFragmentToEditRecipeFragment(
+                recipe.id
+            )
         findNavController().navigate(action)
     }
 
     private fun onDeleteRecipe(recipe: RecipeInfo) {
-        val action = LocalRecipesListFragmentDirections.deleteRecipe(recipe.id, recipe.name)
+        val action =
+            LocalRecipesListFragmentDirections.actionLocalRecipesListFragmentToDeleteRecipeDialog(
+                recipe.id,
+                recipe.name
+            )
         findNavController().navigate(action)
     }
 
@@ -76,10 +89,11 @@ class LocalRecipesListFragment : RecipesListFragment() {
     }
 
     override fun onSelectFilters() {
-        val action = LocalRecipesListFragmentDirections.actionLocalRecipesToSelectFiltersFragment(
-            viewModel.filters.value.toTypedArray(),
-            DataSource.LOCAL
-        )
+        val action =
+            LocalRecipesListFragmentDirections.actionLocalRecipesListFragmentToSelectFilters(
+                viewModel.filters.value.toTypedArray(),
+                DataSource.LOCAL
+            )
         findNavController().navigate(action)
     }
 }

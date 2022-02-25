@@ -2,11 +2,14 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item
         android:id="@+id/local_recipes"
+        android:icon="@drawable/ic_local_recipes"
         android:title="@string/local_recipes" />
     <item
         android:id="@+id/remote_recipes"
+        android:icon="@drawable/ic_remote_recipes"
         android:title="@string/remote_recipes" />
     <item
         android:id="@+id/settings"
+        android:icon="@drawable/ic_settings"
         android:title="@string/settings" />
 </menu>

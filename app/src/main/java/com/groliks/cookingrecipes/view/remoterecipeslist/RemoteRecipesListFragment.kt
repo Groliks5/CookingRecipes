@@ -43,7 +43,10 @@ class RemoteRecipesListFragment : RecipesListFragment() {
     }
 
     private fun onSelectRecipe(recipe: RecipeInfo) {
-        val action = RemoteRecipesListFragmentDirections.viewRecipe(recipe.id)
+        val action =
+            RemoteRecipesListFragmentDirections.actionRemoteRecipesListFragmentToRemoteRecipeViewFragment(
+                recipe.id
+            )
         findNavController().navigate(action)
     }
 
@@ -65,10 +68,11 @@ class RemoteRecipesListFragment : RecipesListFragment() {
     }
 
     override fun onSelectFilters() {
-        val action = RemoteRecipesListFragmentDirections.selectFilter(
-            viewModel.filters.value.toTypedArray(),
-            DataSource.REMOTE
-        )
+        val action =
+            RemoteRecipesListFragmentDirections.actionRemoteRecipesListFragmentToSelectFilters(
+                viewModel.filters.value.toTypedArray(),
+                DataSource.REMOTE
+            )
         findNavController().navigate(action)
     }
 }

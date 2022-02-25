@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/remote_recipes"
+    app:startDestination="@id/remoteRecipesListFragment">
+
+    <include app:graph="@navigation/select_filters" />
+
+    <fragment
+        android:id="@+id/remoteRecipesListFragment"
+        android:name="com.groliks.cookingrecipes.view.remoterecipeslist.RemoteRecipesListFragment"
+        android:label="RemoteRecipesListFragment">
+        <action
+            android:id="@+id/action_remoteRecipesListFragment_to_remoteRecipeViewFragment"
+            app:destination="@id/remoteRecipeViewFragment" />
+        <action
+            android:id="@+id/action_remoteRecipesListFragment_to_select_filters"
+            app:destination="@id/select_filters">
+            <argument
+                android:name="selected_filters"
+                app:argType="com.groliks.cookingrecipes.data.filters.model.Filter[]" />
+            <argument
+                android:name="data_source"
+                app:argType="com.groliks.cookingrecipes.data.DataSource" />
+        </action>
+    </fragment>
+
+    <fragment
+        android:id="@+id/remoteRecipeViewFragment"
+        android:name="com.groliks.cookingrecipes.view.remoterecipeview.RemoteRecipeViewFragment"
+        android:label="RemoteRecipeViewFragment">
+        <argument
+            android:name="recipeId"
+            app:argType="long" />
+    </fragment>
+</navigation>

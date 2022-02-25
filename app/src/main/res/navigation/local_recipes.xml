@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/local_recipes"
+    app:startDestination="@id/localRecipesListFragment">
+
+    <include app:graph="@navigation/select_filters" />
+
+    <fragment
+        android:id="@+id/localRecipesListFragment"
+        android:name="com.groliks.cookingrecipes.view.localrecipeslist.LocalRecipesListFragment"
+        android:label="@string/local_recipes">
+        <action
+            android:id="@+id/action_localRecipesListFragment_to_localRecipeViewFragment"
+            app:destination="@id/localRecipeViewFragment" />
+        <action
+            android:id="@+id/action_localRecipesListFragment_to_editRecipeFragment"
+            app:destination="@id/editRecipeFragment" />
+        <action
+            android:id="@+id/action_localRecipesListFragment_to_deleteRecipeDialog"
+            app:destination="@id/deleteRecipeDialog" />
+        <action
+            android:id="@+id/action_localRecipesListFragment_to_select_filters"
+            app:destination="@id/select_filters">
+            <argument
+                android:name="selected_filters"
+                app:argType="com.groliks.cookingrecipes.data.filters.model.Filter[]" />
+            <argument
+                android:name="data_source"
+                app:argType="com.groliks.cookingrecipes.data.DataSource" />
+        </action>
+    </fragment>
+    <fragment
+        android:id="@+id/localRecipeViewFragment"
+        android:name="com.groliks.cookingrecipes.view.localrecipeview.LocalRecipeViewFragment">
+        <action
+            android:id="@+id/action_localRecipeViewFragment_to_editRecipeFragment"
+            app:destination="@id/editRecipeFragment" />
+        <argument
+            android:name="recipeId"
+            app:argType="long" />
+        <action
+            android:id="@+id/action_LocalRecipeViewFragment_to_deleteRecipeDialog"
+            app:destination="@id/deleteRecipeDialog" />
+    </fragment>
+    <fragment
+        android:id="@+id/editRecipeFragment"
+        android:name="com.groliks.cookingrecipes.view.editrecipe.EditRecipeFragment">
+        <argument
+            android:name="recipeId"
+            app:argType="long" />
+        <action
+            android:id="@+id/action_editRecipeFragment_to_exitWithoutSavingDialog"
+            app:destination="@id/exitWithoutSavingDialog" />
+        <action
+            android:id="@+id/action_editRecipeFragment_to_savingRecipeDialog"
+            app:destination="@id/savingRecipeDialog" />
+        <action
+            android:id="@+id/action_editRecipeFragment_to_photoChoosingDialog"
+            app:destination="@id/photoChoosingDialog" />
+        <action
+            android:id="@+id/action_editRecipeFragment_to_deleteRecipeDialog"
+            app:destination="@id/deleteRecipeDialog" />
+    </fragment>
+    <dialog
+        android:id="@+id/exitWithoutSavingDialog"
+        android:name="com.groliks.cookingrecipes.view.editrecipe.dialogs.ExitWithoutSavingDialog" />
+    <dialog
+        android:id="@+id/savingRecipeDialog"
+        android:name="com.groliks.cookingrecipes.view.editrecipe.dialogs.SavingRecipeDialog" />
+    <dialog
+        android:id="@+id/photoChoosingDialog"
+        android:name="com.groliks.cookingrecipes.view.editrecipe.dialogs.PhotoChoosingDialog">
+        <action
+            android:id="@+id/action_photoChoosingDialog_to_photoPreviewDialog"
+            app:destination="@id/photoPreviewDialog" />
+        <action
+            android:id="@+id/action_photoChoosingDialog_to_enterPhotoUriDialog"
+            app:destination="@id/enterPhotoUriDialog" />
+    </dialog>
+    <dialog
+        android:id="@+id/photoPreviewDialog"
+        android:name="com.groliks.cookingrecipes.view.editrecipe.dialogs.PhotoPreviewDialog"
+        android:label="PhotoPreviewDialog">
+        <argument
+            android:name="uri"
+            app:argType="string" />
+    </dialog>
+    <dialog
+        android:id="@+id/enterPhotoUriDialog"
+        android:name="com.groliks.cookingrecipes.view.editrecipe.dialogs.EnterPhotoUriDialog"
+        android:label="EnterPhotoUriDialog" />
+    <dialog
+        android:id="@+id/deleteRecipeDialog"
+        android:name="com.groliks.cookingrecipes.view.dialogs.DeleteRecipeDialog"
+        android:label="DeleteRecipeDialog">
+        <argument
+            android:name="recipeId"
+            app:argType="long" />
+        <argument
+            android:name="recipeName"
+            app:argType="string" />
+    </dialog>
+</navigation>

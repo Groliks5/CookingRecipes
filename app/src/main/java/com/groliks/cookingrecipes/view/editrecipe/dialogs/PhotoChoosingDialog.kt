@@ -52,7 +52,8 @@ class PhotoChoosingDialog : DialogFragment() {
     private fun setupEnterUriButton() {
         binding.enterUri.setOnClickListener {
             dialog?.hide()
-            val action = PhotoChoosingDialogDirections.enterUri()
+            val action =
+                PhotoChoosingDialogDirections.actionPhotoChoosingDialogToEnterPhotoUriDialog()
             findNavController().navigate(action)
         }
 
@@ -90,7 +91,8 @@ class PhotoChoosingDialog : DialogFragment() {
 
     private fun openPhotoPreview(uri: String) {
         photoUri = uri
-        val action = PhotoChoosingDialogDirections.previewPhoto(uri)
+        val action =
+            PhotoChoosingDialogDirections.actionPhotoChoosingDialogToPhotoPreviewDialog(uri)
         findNavController().navigate(action)
         dialog?.hide()
     }

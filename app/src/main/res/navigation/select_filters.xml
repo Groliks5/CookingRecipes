@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/select_filters"
+    app:startDestination="@id/selectFiltersFragment">
+    <fragment
+        android:id="@+id/selectFiltersFragment"
+        android:name="com.groliks.cookingrecipes.view.selectfilters.SelectFiltersFragment"
+        android:label="@string/select_filters">
+        <argument
+            android:name="selected_filters"
+            app:argType="com.groliks.cookingrecipes.data.filters.model.Filter[]" />
+        <argument
+            android:name="data_source"
+            app:argType="com.groliks.cookingrecipes.data.DataSource" />
+    </fragment>
+</navigation>

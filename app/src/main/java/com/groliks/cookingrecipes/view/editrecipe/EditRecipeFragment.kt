@@ -111,7 +111,8 @@ class EditRecipeFragment : Fragment() {
         binding.recipeCategory.doOnRecipeUpdate(viewModel::updateRecipeCategory)
         binding.recipeInstruction.doOnRecipeUpdate(viewModel::updateRecipeInstruction)
         binding.recipePhoto.setOnClickListener {
-            val action = EditRecipeFragmentDirections.choosePhoto()
+            val action =
+                EditRecipeFragmentDirections.actionEditRecipeFragmentToPhotoChoosingDialog()
             findNavController().navigate(action)
         }
 
@@ -174,7 +175,8 @@ class EditRecipeFragment : Fragment() {
             R.id.save_recipe -> {
                 if (viewModel.isRecipeUpdated) {
                     viewModel.saveRecipe()
-                    val action = EditRecipeFragmentDirections.saveRecipe()
+                    val action =
+                        EditRecipeFragmentDirections.actionEditRecipeFragmentToSavingRecipeDialog()
                     findNavController().navigate(action)
                 }
                 true
@@ -185,7 +187,8 @@ class EditRecipeFragment : Fragment() {
 
     private fun onBackButtonPressed() {
         if (viewModel.isRecipeUpdated) {
-            val action = EditRecipeFragmentDirections.exitWithoutSaving()
+            val action =
+                EditRecipeFragmentDirections.actionEditRecipeFragmentToExitWithoutSavingDialog()
             findNavController().navigate(action)
         } else {
             findNavController().popBackStack()
