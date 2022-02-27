@@ -16,15 +16,25 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0" />
 
+    <TextView
+        android:id="@+id/loading_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/loading"
+        app:layout_constraintBottom_toBottomOf="@id/barrier_top_of_buttons"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
     <androidx.constraintlayout.widget.Barrier
         android:id="@+id/barrier_top_of_buttons"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:barrierDirection="top"
-        app:constraint_referenced_ids="cancel_button, confirm_filters_button" />
+        app:constraint_referenced_ids="cancel_button, ok_button" />
 
     <Button
-        android:id="@+id/confirm_filters_button"
+        android:id="@+id/ok_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/ok"
@@ -39,6 +49,6 @@
         android:text="@string/cancel"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@id/confirm_filters_button" />
+        app:layout_constraintStart_toEndOf="@id/ok_button" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

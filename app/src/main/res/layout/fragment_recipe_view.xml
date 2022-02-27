@@ -87,4 +87,19 @@
         android:maxLines="8"
         app:layout_constraintTop_toBottomOf="@id/instruction_title" />
 
+    <androidx.constraintlayout.widget.Group
+        android:id="@+id/recipe_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:constraint_referenced_ids="recipe_description, recipe_photo, recipe_category, recipe_instruction, recipe_name, recipe_view, ingredients, ingredients_title, instruction_title" />
+
+    <com.google.android.material.progressindicator.CircularProgressIndicator
+        android:id="@+id/loading_bar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

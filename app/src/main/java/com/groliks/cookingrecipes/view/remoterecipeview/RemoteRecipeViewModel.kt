@@ -3,7 +3,6 @@ package com.groliks.cookingrecipes.view.remoterecipeview
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
-import com.groliks.cookingrecipes.data.recipes.model.Recipe
 import com.groliks.cookingrecipes.data.recipes.repository.RecipesRepository
 import com.groliks.cookingrecipes.data.util.DataSource
 import com.groliks.cookingrecipes.data.util.LoadingStatus
@@ -16,40 +15,26 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 
 class RemoteRecipeViewModel(
-    private val recipesRepository: RecipesRepository,
-    private val recipeId: Long,
-) : RecipeViewModel() {
-    private val _recipe = MutableStateFlow<LoadingStatus>(LoadingStatus.Loading())
-    override val recipe = _recipe.asStateFlow()
-
-    private val _downloadingRecipeStatus = MutableStateFlow<LoadingStatus>(LoadingStatus.None)
+    recipesRepository: RecipesRepository,
+    recipeId: Long,
+) : RecipeViewModel(recipesRepository, recipeId, DataSource.REMOTE) {
+    private val _downloadingRecipeStatus =
+        MutableStateFlow<LoadingStatus<Unit>>(LoadingStatus.None())
     val downloadingRecipeStatus = _downloadingRecipeStatus.asStateFlow()
-
-    init {
-        viewModelScope.launch {
-            val recipe = recipesRepository.getRecipe(DataSource.REMOTE, recipeId)
-            _recipe.emit(LoadingStatus.Success(recipe))
-        }
-    }
 
     fun downloadRecipe() {
         viewModelScope.launch {
             val recipeLoadingStatus = recipe.value
             if (recipeLoadingStatus is LoadingStatus.Success) {
-                val recipeInfo = (recipeLoadingStatus.data as Recipe).info
+                val recipeInfo = recipeLoadingStatus.data.info
                 _downloadingRecipeStatus.emit(LoadingStatus.Loading("Downloading recipe: ${recipeInfo.name}"))
-                try {
-                    val recipeId = recipesRepository.downloadRecipe(recipeInfo)
-                    _downloadingRecipeStatus.emit(
-                        LoadingStatus.Success(
-                            data = recipeId,
-                            message = "Recipe ${recipeInfo.name} downloaded"
-                        )
-                    )
+                val result = try {
+                    recipesRepository.downloadRecipe(recipeInfo)
+                    LoadingStatus.Success(Unit, "Recipe ${recipeInfo.name} downloaded")
                 } catch (e: Exception) {
-                    _downloadingRecipeStatus.emit(LoadingStatus.Error(e.message.toString()))
+                    LoadingStatus.Error("Failed to download recipe: ${recipeInfo.name}")
                 }
-                _downloadingRecipeStatus.emit(LoadingStatus.None)
+                _downloadingRecipeStatus.emit(result)
             }
         }
     }

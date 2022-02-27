@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="AppTheme">
+        <!-- Dialogs attributes -->
+        <attr name="dialogCardBackgroundColor" format="color" />
+        <!-- Recipes list attributes -->
+        <attr name="recyclerViewRecipeCardBackgroundColor" format="color" />
+        <attr name="recyclerViewRecipeControlButtonBackgroundColor" format="color" />
+        <attr name="recyclerViewRecipeControlButtonRippleColor" format="color" />
+        <!-- Filters attributes -->
+        <attr name="recyclerViewFilterCardBackgroundColor" format="color" />
+    </declare-styleable>
+</resources>

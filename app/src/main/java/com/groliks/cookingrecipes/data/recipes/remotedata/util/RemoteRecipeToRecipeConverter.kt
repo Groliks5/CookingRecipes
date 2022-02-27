@@ -3,12 +3,11 @@ package com.groliks.cookingrecipes.data.recipes.remotedata.util
 import com.groliks.cookingrecipes.data.recipes.model.Ingredient
 import com.groliks.cookingrecipes.data.recipes.model.Recipe
 import com.groliks.cookingrecipes.data.recipes.model.RecipeInfo
-import com.groliks.cookingrecipes.data.recipes.model.RecipesInfoList
 import com.groliks.cookingrecipes.data.recipes.remotedata.retrofit.RemoteRecipeInfo
 
 class RemoteRecipeToRecipeConverter {
     companion object {
-        fun convertRemoteRecipesInfo(remoteRecipesInfo: List<RemoteRecipeInfo>): RecipesInfoList {
+        fun convertRemoteRecipesInfo(remoteRecipesInfo: List<RemoteRecipeInfo>): List<RecipeInfo> {
             val recipes = mutableListOf<RecipeInfo>()
             for (recipe in remoteRecipesInfo) {
                 val recipeInfo = RecipeInfo(
@@ -19,7 +18,7 @@ class RemoteRecipeToRecipeConverter {
                 )
                 recipes.add(recipeInfo)
             }
-            return RecipesInfoList(recipes)
+            return recipes
         }
 
         fun convertRemoteRecipe(remoteRecipe: Map<String, String?>): Recipe {

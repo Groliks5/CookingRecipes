@@ -18,7 +18,3 @@ data class RecipeInfo(
     @Ignore
     var newPhoto: Bitmap? = null,
 )
-
-data class RecipesInfoList(
-    val recipes: List<RecipeInfo>
-)

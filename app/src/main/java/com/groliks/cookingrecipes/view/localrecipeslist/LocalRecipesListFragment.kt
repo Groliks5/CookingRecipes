@@ -38,24 +38,33 @@ class LocalRecipesListFragment : RecipesListFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        binding.addRecipe.setOnClickListener {
-            viewLifecycleOwner.lifecycleScope.launchWhenStarted {
-                viewModel.createRecipe().collect { recipeId ->
-                    if (recipeId != null) {
-                        val action =
-                            LocalRecipesListFragmentDirections.actionLocalRecipesListFragmentToEditRecipeFragment(
-                                recipeId
-                            )
-                        findNavController().navigate(action)
-                    }
-                }
-            }
-        }
+        setupNewRecipeButton()
+        setupDeleteRecipe()
+    }
 
+    private fun setupDeleteRecipe() {
         setFragmentResultListener(DeleteRecipeDialog.DIALOG_KEY) { _, result ->
             result.getLong(DeleteRecipeDialog.RESULT_KEY).also {
                 viewModel.deleteRecipe(it)
             }
+        }
+    }
+
+    private fun setupNewRecipeButton() {
+        viewLifecycleOwner.lifecycleScope.launchWhenStarted {
+            viewModel.newRecipeId.collect { recipeId ->
+                if (recipeId != null) {
+                    val action =
+                        LocalRecipesListFragmentDirections.actionLocalRecipesListFragmentToEditRecipeFragment(
+                            recipeId
+                        )
+                    findNavController().navigate(action)
+                }
+            }
+        }
+
+        binding.addRecipe.setOnClickListener {
+            viewModel.createRecipe()
         }
     }
 

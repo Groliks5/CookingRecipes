@@ -17,7 +17,7 @@ class RemoteRecipesAdapter(
     }
 
     inner class RemoteRecipeViewHolder(
-        private val binding: ItemRemoteRecipeBinding,
+        binding: ItemRemoteRecipeBinding,
     ) : RecipeViewHolder(binding.recipeInfo, binding.root) {
         init {
             binding.root.setOnClickListener { recipe?.also { onSelectRecipe(it) } }

@@ -50,4 +50,5 @@
     <string name="download">Download</string>
     <string name="select_filters">Select filters</string>
     <string name="area">Area</string>
+    <string name="loading">loading</string>
 </resources>

@@ -3,7 +3,6 @@ package com.groliks.cookingrecipes.data.recipes.remotedata
 import com.groliks.cookingrecipes.data.filters.model.Filter
 import com.groliks.cookingrecipes.data.recipes.model.Recipe
 import com.groliks.cookingrecipes.data.recipes.model.RecipeInfo
-import com.groliks.cookingrecipes.data.recipes.model.RecipesInfoList
 import com.groliks.cookingrecipes.data.recipes.remotedata.retrofit.RecipesApiService
 import com.groliks.cookingrecipes.data.recipes.remotedata.retrofit.RemoteRecipeInfo
 import com.groliks.cookingrecipes.data.recipes.remotedata.util.RemoteRecipeToRecipeConverter
@@ -15,7 +14,7 @@ import javax.inject.Singleton
 class RemoteRecipesDataSourceImpl @Inject constructor(
     private val recipesApiService: RecipesApiService,
 ) : RemoteRecipesDataSource {
-    override suspend fun getRecipes(filters: List<Filter>): RecipesInfoList {
+    override suspend fun getRecipes(filters: List<Filter>): List<RecipeInfo> {
         if (filters.isEmpty()) {
             throw IllegalArgumentException("To get recipes, you need to specify at least 1 filter")
         }
@@ -46,8 +45,8 @@ class RemoteRecipesDataSourceImpl @Inject constructor(
         val recipesInfo = mutableListOf<RecipeInfo>()
         val convertedRecipes =
             RemoteRecipeToRecipeConverter.convertRemoteRecipesInfo(remoteRecipesInfo)
-        recipesInfo.addAll(convertedRecipes.recipes)
-        return RecipesInfoList(recipesInfo)
+        recipesInfo.addAll(convertedRecipes)
+        return recipesInfo
     }
 
     override suspend fun getRecipe(recipeId: Long): Recipe {

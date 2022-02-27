@@ -2,6 +2,7 @@ package com.groliks.cookingrecipes.view.selectfilters.filterslist
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.groliks.cookingrecipes.R
 import com.groliks.cookingrecipes.data.filters.model.Filter
@@ -9,8 +10,7 @@ import com.groliks.cookingrecipes.databinding.ItemSelectFilterBinding
 
 class FiltersAdapter(
     private val onFilterSelected: (Filter, Boolean) -> Unit,
-    private val filters: List<Filter>
-) : RecyclerView.Adapter<FiltersAdapter.SelectFilterViewHolder>() {
+) : ListAdapter<Filter, FiltersAdapter.SelectFilterViewHolder>(FilterItemDiffUtilCallback()) {
 
     override fun onCreateViewHolder(
         parent: ViewGroup,
@@ -22,10 +22,8 @@ class FiltersAdapter(
     }
 
     override fun onBindViewHolder(holder: FiltersAdapter.SelectFilterViewHolder, position: Int) {
-        holder.bind(filters[position])
+        holder.bind(getItem(position))
     }
-
-    override fun getItemCount(): Int = filters.size
 
     inner class SelectFilterViewHolder(private val binding: ItemSelectFilterBinding) :
         RecyclerView.ViewHolder(binding.root) {

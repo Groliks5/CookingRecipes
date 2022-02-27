@@ -6,8 +6,8 @@ import androidx.lifecycle.LifecycleCoroutineScope
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.groliks.cookingrecipes.data.filters.model.Filter
-import com.groliks.cookingrecipes.databinding.ItemAddFilterBinding
 import com.groliks.cookingrecipes.databinding.ItemFilterBinding
+import com.groliks.cookingrecipes.databinding.ItemSelectFiltersBinding
 
 private const val ADD_FILTER_BUTTON_SIZE = 1
 
@@ -27,8 +27,8 @@ class FiltersAdapter(
         val inflater = LayoutInflater.from(parent.context)
         return when (viewType) {
             ADD_FILTER_BUTTON_VIEW_TYPE -> {
-                val binding = ItemAddFilterBinding.inflate(inflater, parent, false)
-                AddFilterViewHolder(binding)
+                val binding = ItemSelectFiltersBinding.inflate(inflater, parent, false)
+                SelectFiltersViewHolder(binding)
             }
             else -> {
                 val binding = ItemFilterBinding.inflate(inflater, parent, false)
@@ -86,10 +86,10 @@ class FiltersAdapter(
         }
     }
 
-    inner class AddFilterViewHolder(binding: ItemAddFilterBinding) :
+    inner class SelectFiltersViewHolder(binding: ItemSelectFiltersBinding) :
         RecyclerView.ViewHolder(binding.root) {
         init {
-            binding.addFilter.setOnClickListener {
+            binding.selectFilters.setOnClickListener {
                 onAddFilter()
             }
         }

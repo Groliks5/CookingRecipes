@@ -4,6 +4,7 @@ import android.content.Context
 import android.os.Bundle
 import android.view.*
 import android.widget.EditText
+import android.widget.Toast
 import androidx.activity.addCallback
 import androidx.core.graphics.drawable.toBitmap
 import androidx.core.widget.doAfterTextChanged
@@ -20,6 +21,7 @@ import coil.load
 import coil.request.ImageRequest
 import com.groliks.cookingrecipes.R
 import com.groliks.cookingrecipes.appComponent
+import com.groliks.cookingrecipes.data.util.LoadingStatus
 import com.groliks.cookingrecipes.databinding.FragmentEditRecipeBinding
 import com.groliks.cookingrecipes.view.editrecipe.dialogs.ExitWithoutSavingDialog
 import com.groliks.cookingrecipes.view.editrecipe.dialogs.PhotoChoosingDialog
@@ -38,6 +40,8 @@ class EditRecipeFragment : Fragment() {
     lateinit var viewModelFactory: EditRecipeViewModelFactory.Factory
     private val viewModel: EditRecipeViewModel by viewModels { viewModelFactory.create(args.recipeId) }
 
+    private var isRecipeInfoEditable = false
+
     override fun onAttach(context: Context) {
         context.appComponent.inject(this)
         super.onAttach(context)
@@ -54,26 +58,14 @@ class EditRecipeFragment : Fragment() {
         requireActivity().onBackPressedDispatcher.addCallback(this) {
             onBackButtonPressed()
         }
-        setupFragmentResultListeners()
+
+        setupExitWithoutSavingListener()
+        setupPhotoChoosingListener()
 
         return binding.root
     }
 
-    private fun setupFragmentResultListeners() {
-        setFragmentResultListener(SavingRecipeDialog.RESULT_KEY) { _, bundle ->
-            val result = bundle.getString(SavingRecipeDialog.SAVING_RESULT_KEY)
-            if (result == SavingRecipeDialog.CANCEL_SAVING) {
-                viewModel.cancelSaving()
-            }
-        }
-
-        setFragmentResultListener(ExitWithoutSavingDialog.DIALOG_KEY) { _, bundle ->
-            val result = bundle.getString(ExitWithoutSavingDialog.RESULT_KEY)
-            if (result == ExitWithoutSavingDialog.RESULT_YES) {
-                findNavController().popBackStack(R.id.edit_recipe, true)
-            }
-        }
-
+    private fun setupPhotoChoosingListener() {
         setFragmentResultListener(PhotoChoosingDialog.PHOTO_CHOOSING_KEY) { _, bundle ->
             val photoUriResult = bundle.getString(PhotoChoosingDialog.PHOTO_URI_KEY)
             photoUriResult?.also { photoUri ->
@@ -90,16 +82,45 @@ class EditRecipeFragment : Fragment() {
         }
     }
 
+    private fun setupExitWithoutSavingListener() {
+        setFragmentResultListener(ExitWithoutSavingDialog.DIALOG_KEY) { _, bundle ->
+            val result = bundle.getString(ExitWithoutSavingDialog.RESULT_KEY)
+            if (result == ExitWithoutSavingDialog.RESULT_YES) {
+                findNavController().popBackStack(R.id.editRecipeFragment, true)
+            }
+        }
+    }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
         setupIngredientsRecyclerView()
         setupRecipeInfoView()
+        setupSaveResultListener()
+    }
+
+    private fun setupSaveResultListener() {
+        setFragmentResultListener(SavingRecipeDialog.RESULT_KEY) { _, bundle ->
+            val result = bundle.getString(SavingRecipeDialog.SAVING_RESULT_KEY)
+            if (result == SavingRecipeDialog.CANCEL_SAVING) {
+                viewModel.cancelSaving()
+            }
+        }
 
         viewLifecycleOwner.lifecycleScope.launchWhenStarted {
-            viewModel.isSaveFinished.collect { isSaveFinished ->
-                if (isSaveFinished) {
-                    findNavController().popBackStack(R.id.edit_recipe, false)
+            viewModel.savingStatus.collect { savingStatus ->
+                when (savingStatus) {
+                    is LoadingStatus.None -> {}
+                    is LoadingStatus.Loading -> {}
+                    is LoadingStatus.Success, is LoadingStatus.Error -> {
+                        findNavController().popBackStack(R.id.editRecipeFragment, false)
+                        Toast.makeText(
+                            requireContext(),
+                            savingStatus.message,
+                            Toast.LENGTH_SHORT
+                        ).show()
+                        viewModel.saveResultReceived()
+                    }
                 }
             }
         }
@@ -119,6 +140,7 @@ class EditRecipeFragment : Fragment() {
         viewLifecycleOwner.lifecycleScope.launchWhenStarted {
             viewModel.recipeInfo.collect {
                 it?.also { recipeInfo ->
+                    isRecipeInfoEditable = false
                     binding.recipeName.setText(recipeInfo.name)
                     binding.recipeDescription.setText(recipeInfo.description)
                     binding.recipeCategory.setText(recipeInfo.category)
@@ -127,7 +149,7 @@ class EditRecipeFragment : Fragment() {
                         binding.recipePhoto.load(recipeInfo.photoUri)
                     }
 
-                    viewModel.setRecipeInfoEditable()
+                    isRecipeInfoEditable = true
                 }
             }
         }
@@ -159,7 +181,7 @@ class EditRecipeFragment : Fragment() {
 
     private fun EditText.doOnRecipeUpdate(callback: (String) -> Unit) {
         doAfterTextChanged { text ->
-            if (viewModel.isRecipeInfoEditable) {
+            if (isRecipeInfoEditable) {
                 callback(text.toString())
             }
         }
@@ -191,7 +213,7 @@ class EditRecipeFragment : Fragment() {
                 EditRecipeFragmentDirections.actionEditRecipeFragmentToExitWithoutSavingDialog()
             findNavController().navigate(action)
         } else {
-            findNavController().popBackStack()
+            findNavController().popBackStack(R.id.editRecipeFragment, true)
         }
     }
 

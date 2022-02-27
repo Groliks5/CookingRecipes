@@ -21,7 +21,6 @@ abstract class RecipesAdapter :
         protected var recipe: RecipeInfo? = null
 
         open fun bind(recipe: RecipeInfo) {
-            binding.recipePhotoLoadingBar.show()
             this.recipe = recipe
             binding.recipeName.text = recipe.name
             binding.recipeDescription.text = recipe.description
@@ -29,15 +28,10 @@ abstract class RecipesAdapter :
             binding.recipePhoto.load(recipe.photoUri) {
                 error(R.drawable.ic_error_image_loading)
                 listener(
-                    onCancel = {
-                        binding.recipePhotoLoadingBar.hide()
-                    },
-                    onError = { _, _ ->
-                        binding.recipePhotoLoadingBar.hide()
-                    },
-                    onSuccess = { _, _ ->
-                        binding.recipePhotoLoadingBar.hide()
-                    }
+                    onStart = { binding.recipePhotoLoadingBar.show() },
+                    onCancel = { binding.recipePhotoLoadingBar.hide() },
+                    onError = { _, _ -> binding.recipePhotoLoadingBar.hide() },
+                    onSuccess = { _, _ -> binding.recipePhotoLoadingBar.hide() }
                 )
             }
         }

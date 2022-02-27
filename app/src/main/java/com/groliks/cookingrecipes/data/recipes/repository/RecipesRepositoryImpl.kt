@@ -8,7 +8,6 @@ import com.groliks.cookingrecipes.data.filters.model.Filter
 import com.groliks.cookingrecipes.data.recipes.localdata.LocalRecipesDataSource
 import com.groliks.cookingrecipes.data.recipes.model.Recipe
 import com.groliks.cookingrecipes.data.recipes.model.RecipeInfo
-import com.groliks.cookingrecipes.data.recipes.model.RecipesInfoList
 import com.groliks.cookingrecipes.data.recipes.remotedata.RemoteRecipesDataSource
 import com.groliks.cookingrecipes.data.util.DataSource
 import kotlinx.coroutines.Dispatchers
@@ -25,7 +24,7 @@ class RecipesRepositoryImpl @Inject constructor(
     override suspend fun getRecipes(
         dataSource: DataSource,
         recipesFilter: List<Filter>
-    ): RecipesInfoList = withContext(Dispatchers.IO) {
+    ): List<RecipeInfo> = withContext(Dispatchers.IO) {
         when (dataSource) {
             DataSource.LOCAL -> localRecipesDataSource.getRecipes(recipesFilter)
             DataSource.REMOTE -> remoteRecipesRecipesDataSource.getRecipes(recipesFilter)

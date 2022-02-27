@@ -5,7 +5,10 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.core.os.bundleOf
+import androidx.core.view.isInvisible
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.setFragmentResult
 import androidx.fragment.app.viewModels
@@ -15,8 +18,10 @@ import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.groliks.cookingrecipes.R
 import com.groliks.cookingrecipes.appComponent
+import com.groliks.cookingrecipes.data.util.LoadingStatus
 import com.groliks.cookingrecipes.databinding.FragmentSelectFiltersBinding
 import com.groliks.cookingrecipes.view.selectfilters.filterslist.FiltersAdapter
+import com.groliks.cookingrecipes.view.util.TextLoadingAnimator
 import kotlinx.coroutines.flow.collect
 import javax.inject.Inject
 
@@ -28,6 +33,8 @@ class SelectFiltersFragment : Fragment() {
     private val viewModel: SelectFiltersViewModel by viewModels {
         viewModelFactory.create(navArgs.selectedFilters, navArgs.dataSource)
     }
+
+    private var loadingAnimator: TextLoadingAnimator? = null
 
     override fun onAttach(context: Context) {
         context.appComponent.inject(this)
@@ -41,35 +48,71 @@ class SelectFiltersFragment : Fragment() {
     ): View {
         val binding = FragmentSelectFiltersBinding.inflate(inflater, container, false)
 
-        binding.filters.layoutManager = LinearLayoutManager(requireContext())
-
-        viewLifecycleOwner.lifecycleScope.launchWhenStarted {
-            viewModel.filters.collect {
-                it?.also { filters ->
-                    val adapter = FiltersAdapter(
-                        viewModel::changeFilterSelection,
-                        filters
-                    )
-                    binding.filters.adapter = adapter
-                }
-            }
-        }
-
-        binding.cancelButton.setOnClickListener {
-            close()
-        }
-
-        binding.confirmFiltersButton.setOnClickListener {
-            val selectedFilters = viewModel.getSelectedFilters()
-            setFragmentResult(SELECT_FILTERS_KEY, bundleOf(SELECTED_FILTERS_KEY to selectedFilters))
-            close()
-        }
+        setupFiltersList(binding)
+        setupCloseButton(binding)
+        setupOkButton(binding)
 
         return binding.root
     }
 
+    private fun setupOkButton(binding: FragmentSelectFiltersBinding) {
+        binding.okButton.setOnClickListener {
+            val selectedFilters = viewModel.getSelectedFilters()
+            setFragmentResult(SELECT_FILTERS_KEY, bundleOf(SELECTED_FILTERS_KEY to selectedFilters))
+            close()
+        }
+    }
+
+    private fun setupCloseButton(binding: FragmentSelectFiltersBinding) {
+        binding.cancelButton.setOnClickListener {
+            close()
+        }
+    }
+
+    private fun setupFiltersList(binding: FragmentSelectFiltersBinding) {
+        binding.filters.layoutManager = LinearLayoutManager(requireContext())
+        val adapter = FiltersAdapter(viewModel::changeFilterSelection)
+        binding.filters.adapter = adapter
+
+        loadingAnimator = TextLoadingAnimator(binding.loadingText)
+
+        viewLifecycleOwner.lifecycleScope.launchWhenStarted {
+            viewModel.filters.collect { loadingStatus ->
+                when (loadingStatus) {
+                    is LoadingStatus.None -> {}
+                    is LoadingStatus.Loading -> {
+                        binding.filters.isInvisible = true
+                        binding.loadingText.isVisible = true
+                        loadingAnimator?.start()
+                    }
+                    is LoadingStatus.Success -> {
+                        binding.loadingText.isInvisible = true
+                        loadingAnimator?.stop()
+                        binding.filters.isVisible = true
+                        val filters = loadingStatus.data
+                        adapter.submitList(filters)
+                        binding.filters.adapter = adapter
+                    }
+                    is LoadingStatus.Error -> {
+                        binding.loadingText.isInvisible = true
+                        loadingAnimator?.stop()
+                        binding.filters.isVisible = true
+                        Toast.makeText(requireContext(), loadingStatus.message, Toast.LENGTH_SHORT)
+                            .show()
+                    }
+                }
+            }
+        }
+    }
+
     private fun close() {
         findNavController().popBackStack(R.id.selectFiltersFragment, true)
+    }
+
+    override fun onDestroyView() {
+        loadingAnimator?.stop()
+        loadingAnimator = null
+        super.onDestroyView()
     }
 
     companion object {
