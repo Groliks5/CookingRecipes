@@ -81,7 +81,7 @@ abstract class RecipesListFragment : Fragment() {
                 when (loadingStatus) {
                     is LoadingStatus.None -> {}
                     is LoadingStatus.Loading -> {
-                        binding.noRecipesFoundText.isInvisible = true
+                        binding.recipesNotFoundText.isInvisible = true
                     }
                     is LoadingStatus.Success -> {
                         binding.loadingText.isInvisible = true
@@ -90,13 +90,13 @@ abstract class RecipesListFragment : Fragment() {
                         recipesAdapter.submitList(recipesInfo)
                         binding.recipes.isVisible = true
                         if (recipesInfo.isEmpty()) {
-                            binding.noRecipesFoundText.isVisible = true
+                            binding.recipesNotFoundText.isVisible = true
                         }
                     }
                     is LoadingStatus.Error -> {
                         binding.loadingText.isInvisible = true
                         loadingAnimator?.stop()
-                        binding.noRecipesFoundText.isVisible = true
+                        binding.recipesNotFoundText.isVisible = true
                         Toast.makeText(requireContext(), loadingStatus.message, Toast.LENGTH_SHORT)
                             .show()
                     }

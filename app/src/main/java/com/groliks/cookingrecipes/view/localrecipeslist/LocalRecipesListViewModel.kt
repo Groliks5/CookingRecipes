@@ -30,6 +30,7 @@ class LocalRecipesListViewModel(
             val newRecipe = Recipe()
             val id = recipesRepository.addRecipe(newRecipe)
             _newRecipeId.emit(id)
+            _newRecipeId.emit(null)
         }
     }
 

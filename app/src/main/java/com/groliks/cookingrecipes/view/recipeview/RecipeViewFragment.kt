@@ -68,6 +68,11 @@ abstract class RecipeViewFragment : Fragment() {
         }
     }
 
+    override fun onStart() {
+        super.onStart()
+        viewModel.updateRecipe()
+    }
+
     override fun onDestroyView() {
         _binding = null
         super.onDestroyView()

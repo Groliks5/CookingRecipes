@@ -38,10 +38,10 @@
         app:layout_constraintTop_toBottomOf="@id/filters" />
 
     <TextView
-        android:id="@+id/no_recipes_found_text"
+        android:id="@+id/recipes_not_found_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/loading"
+        android:text="@string/recipes_not_found"
         android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

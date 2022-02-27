@@ -19,10 +19,14 @@ abstract class RecipeViewModel(
     val recipe = _recipe.asStateFlow()
 
     init {
+        updateRecipe()
+    }
+
+    fun updateRecipe() {
         viewModelScope.launch {
             _recipe.emit(LoadingStatus.Loading("Loading recipe with id $recipeId"))
             val result = try {
-                val recipe = recipesRepository.getRecipe(DataSource.LOCAL, recipeId)
+                val recipe = recipesRepository.getRecipe(dataSource, recipeId)
                 LoadingStatus.Success(recipe, "Recipe with id $recipeId loaded")
             } catch (e: Exception) {
                 LoadingStatus.Error("Failed to load recipe with id $recipeId")

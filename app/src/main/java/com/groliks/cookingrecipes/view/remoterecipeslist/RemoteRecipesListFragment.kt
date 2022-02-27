@@ -40,6 +40,14 @@ class RemoteRecipesListFragment : RecipesListFragment() {
         binding.addRecipe.isGone = true
 
         setupDownloadingRecipeMessage()
+
+        viewLifecycleOwner.lifecycleScope.launchWhenStarted {
+            viewModel.filters.collect {
+                if (it.isEmpty()) {
+                    onSelectFilters()
+                }
+            }
+        }
     }
 
     private fun onSelectRecipe(recipe: RecipeInfo) {

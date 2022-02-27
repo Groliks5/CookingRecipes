@@ -17,8 +17,8 @@
     <!--Recipes list-->
     <string name="add_recipe">Add recipe</string>
     <string name="edit_recipe">Edit recipe</string>
-    <string name="delete_recipe">delete_recipe</string>
-    <string name="favourite_recipe">favourite_recipe</string>
+    <string name="delete_recipe">Delete recipe</string>
+    <string name="favourite_recipe">Favourite recipe</string>
     <string name="add_ingredient">Add ingredient</string>
     <string name="enter_ingredient_name">Name</string>
     <string name="ingredient_separator">-</string>
@@ -43,7 +43,7 @@
     <string name="category_filter">Category filter</string>
     <string name="filter_selection_name">%1$s: %2$s</string>
     <string name="category">Category</string>
-    <string name="favourite">Favourites</string>
+    <string name="favourite">Favourite</string>
     <string name="delete_recipe_warning">Are you sure you want to delete recipe: %1$s?</string>
     <string name="ingredient">%1$s%2$s%3$s</string>
     <string name="download_recipe">Download recipe</string>
@@ -51,4 +51,7 @@
     <string name="select_filters">Select filters</string>
     <string name="area">Area</string>
     <string name="loading">loading</string>
+    <string name="recipes_not_found">Recipes not found</string>
+    <string name="add_to_favourite">Add to favourite</string>
+    <string name="delete_from_favourite">Delete from favourite</string>
 </resources>

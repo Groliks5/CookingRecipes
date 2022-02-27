@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.activity.addCallback
 import androidx.core.os.bundleOf
 import androidx.core.view.isInvisible
 import androidx.core.view.isVisible
@@ -18,6 +19,7 @@ import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.groliks.cookingrecipes.R
 import com.groliks.cookingrecipes.appComponent
+import com.groliks.cookingrecipes.data.util.DataSource
 import com.groliks.cookingrecipes.data.util.LoadingStatus
 import com.groliks.cookingrecipes.databinding.FragmentSelectFiltersBinding
 import com.groliks.cookingrecipes.view.selectfilters.filterslist.FiltersAdapter
@@ -52,6 +54,10 @@ class SelectFiltersFragment : Fragment() {
         setupCloseButton(binding)
         setupOkButton(binding)
 
+        requireActivity().onBackPressedDispatcher.addCallback(this) {
+            onBackButtonPressed()
+        }
+
         return binding.root
     }
 
@@ -65,7 +71,16 @@ class SelectFiltersFragment : Fragment() {
 
     private fun setupCloseButton(binding: FragmentSelectFiltersBinding) {
         binding.cancelButton.setOnClickListener {
-            close()
+            if (navArgs.dataSource == DataSource.LOCAL || navArgs.selectedFilters.isNotEmpty()) {
+                close()
+            } else {
+                Toast.makeText(
+                    requireContext(),
+                    "You can't view remote recipes without filters",
+                    Toast.LENGTH_SHORT
+                )
+                    .show()
+            }
         }
     }
 
@@ -106,7 +121,15 @@ class SelectFiltersFragment : Fragment() {
     }
 
     private fun close() {
+        if (navArgs.dataSource == DataSource.REMOTE && viewModel.getSelectedFilters().isEmpty()) {
+            Toast.makeText(requireContext(), "Select at least 1 filter", Toast.LENGTH_SHORT).show()
+            return
+        }
         findNavController().popBackStack(R.id.selectFiltersFragment, true)
+    }
+
+    private fun onBackButtonPressed() {
+        close()
     }
 
     override fun onDestroyView() {

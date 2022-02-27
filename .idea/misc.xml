@@ -31,6 +31,7 @@
         <entry key="..\:/CookingRecipes/app/src/main/res/layout/item_view_ingredient.xml" value="0.17135416666666667" />
         <entry key="..\:/CookingRecipes/app/src/main/res/layout/recipe_info.xml" value="0.17604166666666668" />
         <entry key="..\:/CookingRecipes/app/src/main/res/menu/menu_bottom.xml" value="0.21927083333333333" />
+        <entry key="..\:/CookingRecipes/app/src/main/res/menu/menu_local_recipe_view.xml" value="0.33" />
         <entry key="..\:/CookingRecipes/app/src/main/res/menu/menu_remote_recipe_view.xml" value="0.1" />
       </map>
     </option>

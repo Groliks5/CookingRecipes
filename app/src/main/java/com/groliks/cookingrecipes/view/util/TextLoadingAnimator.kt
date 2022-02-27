@@ -6,7 +6,7 @@ import android.animation.ValueAnimator
 import android.widget.TextView
 
 class TextLoadingAnimator(view: TextView) {
-    private lateinit var animator: ValueAnimator
+    private var animator: ValueAnimator
 
     init {
         val typeEvaluator =

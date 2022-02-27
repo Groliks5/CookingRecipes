@@ -16,7 +16,7 @@ class RemoteRecipesDataSourceImpl @Inject constructor(
 ) : RemoteRecipesDataSource {
     override suspend fun getRecipes(filters: List<Filter>): List<RecipeInfo> {
         if (filters.isEmpty()) {
-            throw IllegalArgumentException("To get recipes, you need to specify at least 1 filter")
+            return listOf()
         }
 
         val remoteRecipesInfoByFilter = buildMap<String, MutableList<RemoteRecipeInfo>> {

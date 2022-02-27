@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/editRecipeFragment"
+        android:title="@string/edit_recipe" />
+
+    <item
+        android:id="@+id/deleteRecipeDialog"
+        android:title="@string/delete_recipe" />
+
+    <item
+        android:id="@+id/set_favourite"
+        android:title="@string/add_to_favourite" />
+</menu>

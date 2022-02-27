@@ -17,7 +17,7 @@ private const val FILTER_VIEW_TYPE = 1
 private const val FIRST_FILTER_POSITION = ADD_FILTER_BUTTON_SIZE
 
 class FiltersAdapter(
-    private val onAddFilter: () -> Unit,
+    private val onSelectFilters: () -> Unit,
     private val onDeleteFilter: (Filter) -> Unit,
     private val coroutineScope: LifecycleCoroutineScope,
 ) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
@@ -61,7 +61,8 @@ class FiltersAdapter(
 
     fun submitFilters(newFilters: List<Filter>) {
         coroutineScope.launchWhenStarted {
-            val diffUtilCallback = FilterDiffUtilCallback(filters, newFilters)
+            val diffUtilCallback =
+                FilterDiffUtilCallback(filters, newFilters, FIRST_FILTER_POSITION)
             val diffUtilResult = DiffUtil.calculateDiff(diffUtilCallback)
             filters = newFilters
             diffUtilResult.dispatchUpdatesTo(this@FiltersAdapter)
@@ -90,7 +91,7 @@ class FiltersAdapter(
         RecyclerView.ViewHolder(binding.root) {
         init {
             binding.selectFilters.setOnClickListener {
-                onAddFilter()
+                onSelectFilters()
             }
         }
     }
