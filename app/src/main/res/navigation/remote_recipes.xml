@@ -9,7 +9,7 @@
     <fragment
         android:id="@+id/remoteRecipesListFragment"
         android:name="com.groliks.cookingrecipes.view.remoterecipeslist.RemoteRecipesListFragment"
-        android:label="RemoteRecipesListFragment">
+        android:label="@string/remote_recipes">
         <action
             android:id="@+id/action_remoteRecipesListFragment_to_remoteRecipeViewFragment"
             app:destination="@id/remoteRecipeViewFragment" />
@@ -28,7 +28,7 @@
     <fragment
         android:id="@+id/remoteRecipeViewFragment"
         android:name="com.groliks.cookingrecipes.view.remoterecipeview.RemoteRecipeViewFragment"
-        android:label="RemoteRecipeViewFragment">
+        android:label="">
         <argument
             android:name="recipeId"
             app:argType="long" />

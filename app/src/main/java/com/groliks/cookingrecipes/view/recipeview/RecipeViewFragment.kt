@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isInvisible
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
@@ -57,6 +58,8 @@ abstract class RecipeViewFragment : Fragment() {
                         ingredientsAdapter.submitList(recipe.ingredients)
                         binding.loadingBar.isInvisible = true
                         binding.recipeView.isVisible = true
+                        (requireActivity() as? AppCompatActivity)?.supportActionBar?.title =
+                            recipe.info.name
                     }
                     is LoadingStatus.Error -> {
                         binding.loadingBar.isInvisible = true

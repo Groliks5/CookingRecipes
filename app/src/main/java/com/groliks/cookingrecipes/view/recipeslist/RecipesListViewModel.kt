@@ -34,7 +34,7 @@ abstract class RecipesListViewModel(
             val recipes = recipesRepository.getRecipes(dataSource, filters.value)
             LoadingStatus.Success(recipes)
         } catch (e: Exception) {
-            LoadingStatus.Error("Failed to load recipes")
+            LoadingStatus.Error()
         }
         _recipesList.emit(result)
     }

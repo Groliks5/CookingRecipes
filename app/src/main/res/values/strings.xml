@@ -1,57 +1,78 @@
 <resources>
-    <string name="app_name">CookingRecipes</string>
-
-    <!--Menu bottom-->
+    <!-- App name -->
+    <string name="app_name">Cooking recipes</string>
+    <!-- Main menu-->
     <string name="local_recipes">Local recipes</string>
     <string name="remote_recipes">Remote recipes</string>
     <string name="settings">Settings</string>
-
-    <!--Edit recipe-->
+    <!-- Recipes list -->
+    <string name="select_filters">Select filters</string>
+    <string name="failed_to_load_recipes">Failed to load recipes</string>
+    <string name="recipes_not_found">Recipes not found</string>
+    <string name="delete_filter">Delete filter</string>
+    <!-- Local recipes list -->
+    <string name="add_recipe">Add recipe</string>
+    <!-- Local recipe buttons -->
+    <string name="edit_recipe">Edit</string>
+    <string name="delete_recipe">Delete</string>
+    <string name="add_to_favourite">Add to favourite</string>
+    <string name="delete_from_favourite">Delete from favourite</string>
+    <!-- Remote recipe buttons -->
+    <string name="download_recipe">Download</string>
+    <!-- Filter selection -->
+    <string name="filter_selection_name" translatable="false">%1$s: %2$s</string>
+    <!-- Recipe details headers -->
+    <string name="ingredients">Ingredients</string>
+    <string name="instruction">Instruction</string>
+    <!-- Recipe view -->
+    <string name="ingredient" translatable="false">%1$s%2$s%3$s</string>
+    <!-- Edit recipe -->
     <string name="recipe_name">Recipe name</string>
     <string name="recipe_photo">Recipe photo</string>
     <string name="recipe_category">Recipe category</string>
-    <string name="ingredients">Ingredients</string>
     <string name="recipe_description">Recipe description</string>
-    <string name="instruction">Instruction</string>
-
-    <!--Recipes list-->
-    <string name="add_recipe">Add recipe</string>
-    <string name="edit_recipe">Edit recipe</string>
-    <string name="delete_recipe">Delete recipe</string>
-    <string name="favourite_recipe">Favourite recipe</string>
     <string name="add_ingredient">Add ingredient</string>
     <string name="enter_ingredient_name">Name</string>
-    <string name="ingredient_separator">-</string>
+    <string name="ingredient_separator"> - </string>
     <string name="enter_ingredient_measure">Measure</string>
     <string name="save_recipe">Save</string>
+    <!-- Exit without saving dialog -->
     <string name="exit_without_saving_warning">Are you sure you want to exit without saving?</string>
-    <string name="yes">yes</string>
-    <string name="no">no</string>
-    <string name="saving">saving</string>
-    <string name="cancel">Cancel</string>
+    <!-- Saving dialog -->
+    <string name="saving">Saving</string>
+    <!-- Photo choosing dialog -->
     <string name="pick_from_gallery">Pick from gallery</string>
     <string name="enter_uri">Enter uri</string>
-    <string name="ok">OK</string>
+    <!-- Photo preview dialog -->
     <string name="photo_preview">Photo preview</string>
+    <!-- Delete recipe dialog -->
+    <string name="delete_recipe_warning">Are you sure you want to delete recipe: %1$s?</string>
+    <!-- Dialog buttons -->
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
+    <string name="cancel">Cancel</string>
+    <string name="ok">OK</string>
+    <!-- Loading text -->
+    <string name="loading">Loading</string>
+    <!-- Selecting filters -->
+    <string name="failed_to_load_filters">Failed to load filters</string>
+    <string name="no_selected_filters_error">You can\'t view remote recipes without filters.</string>
+    <!-- Filter types -->
+    <string name="category">Category</string>
+    <string name="favourites">Favourites</string>
+    <string name="area">Area</string>
+    <!-- Deleting recipe -->
+    <string name="deleting_recipe">Deleting recipe</string>
+    <string name="recipe_deleted">Recipe deleted</string>
+    <string name="failed_to_delete_recipe">Failed to delete recipe</string>
+    <!-- Downloading recipe -->
+    <string name="downloading_recipe">Downloading recipe</string>
+    <string name="recipe_downloaded">Recipe downloaded</string>
+    <string name="failed_to_download_recipe">Failed to download recipe</string>
+    <!-- Saving recipe -->
+    <string name="recipe_saved">Recipe saved</string>
+    <string name="failed_to_save_recipe">Failed to save recipe</string>
+    <!-- Photo uri -->
     <string name="photo_uri">Photo uri</string>
     <string name="uri_not_found">Uri not found</string>
-    <string name="add_filter">Add filter</string>
-    <string name="delete_filter">Delete filter</string>
-    <string name="favourites">Favourites</string>
-    <string name="delete_old_filters">Delete old filters</string>
-    <string name="add_category_filter">Add category</string>
-    <string name="category_filter">Category filter</string>
-    <string name="filter_selection_name">%1$s: %2$s</string>
-    <string name="category">Category</string>
-    <string name="favourite">Favourite</string>
-    <string name="delete_recipe_warning">Are you sure you want to delete recipe: %1$s?</string>
-    <string name="ingredient">%1$s%2$s%3$s</string>
-    <string name="download_recipe">Download recipe</string>
-    <string name="download">Download</string>
-    <string name="select_filters">Select filters</string>
-    <string name="area">Area</string>
-    <string name="loading">loading</string>
-    <string name="recipes_not_found">Recipes not found</string>
-    <string name="add_to_favourite">Add to favourite</string>
-    <string name="delete_from_favourite">Delete from favourite</string>
 </resources>

@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- App name -->
+    <string name="app_name">Кулинарные рецепты</string>
+    <!-- Main menu -->
+    <string name="local_recipes">Локальные рецепты</string>
+    <string name="remote_recipes">Рецепты из сети</string>
+    <string name="settings">Настройки</string>
+    <!-- Recipes list -->
+    <string name="select_filters">Выбрать фильтры</string>
+    <string name="failed_to_load_recipes">Не удалось загрузить рецепты</string>
+    <string name="recipes_not_found">Рецепты не найдены</string>
+    <string name="delete_filter">Удалить фильтр</string>
+    <!-- Local recipes list -->
+    <string name="add_recipe">Создать рецепт</string>
+    <!-- Local recipe buttons -->
+    <string name="edit_recipe">Редактировать</string>
+    <string name="delete_recipe">Удалить</string>
+    <string name="add_to_favourite">Добавить в избранные</string>
+    <string name="delete_from_favourite">Удалить из избранных</string>
+    <!-- Remote recipe buttons -->
+    <string name="download_recipe">Скачать</string>
+    <!-- Recipe details headers -->
+    <string name="ingredients">Ингредиенты</string>
+    <string name="instruction">Инструкция</string>
+    <!-- Edit recipe -->
+    <string name="recipe_name">Название рецепта</string>
+    <string name="recipe_photo">Фото рецепта</string>
+    <string name="recipe_category">Категория рецепта</string>
+    <string name="recipe_description">Описание рецепта</string>
+    <string name="add_ingredient">Добавить ингредиент</string>
+    <string name="enter_ingredient_name">Название</string>
+    <string name="ingredient_separator"> - </string>
+    <string name="enter_ingredient_measure">Количество</string>
+    <string name="save_recipe">Сохранить</string>
+    <!-- Exit without saving dialog -->
+    <string name="exit_without_saving_warning">Вы действительно хотите выйти без сохранения?</string>
+    <!-- Saving dialog -->
+    <string name="saving">Сохранение</string>
+    <!-- Photo choosing dialog -->
+    <string name="pick_from_gallery">Выбрать из галереи</string>
+    <string name="enter_uri">Ввести uri</string>
+    <!-- Photo preview dialog -->
+    <string name="photo_preview">Предпросмотр фото</string>
+    <!-- Delete recipe dialog -->
+    <string name="delete_recipe_warning">Вы действительно хотите удалить рецепт: %1$s?</string>
+    <!-- Dialog buttons -->
+    <string name="yes">Да</string>
+    <string name="no">Нет</string>
+    <string name="cancel">Отменить</string>
+    <string name="ok">ОК</string>
+    <!-- Loading text -->
+    <string name="loading">Загрузка</string>
+    <!-- Selecting filters -->
+    <string name="failed_to_load_filters">Не удалось загрузить фильтры</string>
+    <string name="no_selected_filters_error">Вы не можете просматривать рецепты из сети без выбранных фильтров</string>
+    <!-- Filter types -->
+    <string name="category">Категория</string>
+    <string name="favourites">Избранные</string>
+    <string name="area">Регион</string>
+    <!-- Deleting recipe -->
+    <string name="deleting_recipe">Удаление рецепта</string>
+    <string name="recipe_deleted">Рецепт удален</string>
+    <string name="failed_to_delete_recipe">Не удалось удалить рецепт</string>
+    <!-- Downloading recipe -->
+    <string name="downloading_recipe">Скачивание рецепта</string>
+    <string name="recipe_downloaded">Рецепт скачан</string>
+    <string name="failed_to_download_recipe">Не удалось скачать рецепт</string>
+    <!-- Saving recipe -->
+    <string name="recipe_saved">Рецепт сохранен</string>
+    <string name="failed_to_save_recipe">Не удалось сохранить рецепт</string>
+    <!-- Photo uri -->
+    <string name="photo_uri">Uri фотографии</string>
+    <string name="uri_not_found">Uri не найден</string>
+</resources>

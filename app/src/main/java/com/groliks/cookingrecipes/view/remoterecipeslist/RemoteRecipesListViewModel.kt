@@ -28,12 +28,12 @@ class RemoteRecipesListViewModel(
 
     fun downloadRecipe(recipeInfo: RecipeInfo) {
         viewModelScope.launch {
-            _downloadingRecipeStatus.emit(LoadingStatus.Loading("Downloading recipe: ${recipeInfo.name}"))
+            _downloadingRecipeStatus.emit(LoadingStatus.Loading(recipeInfo.name))
             val result = try {
                 recipesRepository.downloadRecipe(recipeInfo)
-                LoadingStatus.Success(Unit, "Recipe ${recipeInfo.name} downloaded")
+                LoadingStatus.Success(Unit, recipeInfo.name)
             } catch (e: Exception) {
-                LoadingStatus.Error(e.message.toString())
+                LoadingStatus.Error(recipeInfo.name)
             }
             _downloadingRecipeStatus.emit(result)
         }

@@ -24,7 +24,7 @@ class SelectFiltersViewModel(
 
     init {
         viewModelScope.launch {
-            _filters.emit(LoadingStatus.Loading("Loading filters"))
+            _filters.emit(LoadingStatus.Loading())
             val result = try {
                 val availableFilters = filtersRepository.getAvailableFilters(dataSource)
                 selectedFilters.forEach { selectedFilter ->
@@ -34,9 +34,9 @@ class SelectFiltersViewModel(
                         filter.isSelected = true
                     }
                 }
-                LoadingStatus.Success(availableFilters, "Filters loaded")
+                LoadingStatus.Success(availableFilters)
             } catch (e: Exception) {
-                LoadingStatus.Error("Failed to load filters")
+                LoadingStatus.Error()
             }
             _filters.emit(result)
         }

@@ -6,6 +6,7 @@ import android.view.*
 import android.widget.EditText
 import android.widget.Toast
 import androidx.activity.addCallback
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.graphics.drawable.toBitmap
 import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.Fragment
@@ -114,9 +115,12 @@ class EditRecipeFragment : Fragment() {
                     is LoadingStatus.Loading -> {}
                     is LoadingStatus.Success, is LoadingStatus.Error -> {
                         findNavController().popBackStack(R.id.editRecipeFragment, false)
+                        val messageId =
+                            if (savingStatus is LoadingStatus.Success) R.string.recipe_saved else R.string.failed_to_save_recipe
+                        val message = requireContext().resources.getString(messageId)
                         Toast.makeText(
                             requireContext(),
-                            savingStatus.message,
+                            message,
                             Toast.LENGTH_SHORT
                         ).show()
                         viewModel.saveResultReceived()
@@ -148,6 +152,8 @@ class EditRecipeFragment : Fragment() {
                     if (recipeInfo.photoUri.isNotBlank()) {
                         binding.recipePhoto.load(recipeInfo.photoUri)
                     }
+                    (requireActivity() as? AppCompatActivity)?.supportActionBar?.title =
+                        recipeInfo.name
 
                     isRecipeInfoEditable = true
                 }

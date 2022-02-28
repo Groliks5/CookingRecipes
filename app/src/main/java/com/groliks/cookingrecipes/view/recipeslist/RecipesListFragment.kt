@@ -11,6 +11,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.setFragmentResultListener
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.groliks.cookingrecipes.R
 import com.groliks.cookingrecipes.data.filters.model.Filter
 import com.groliks.cookingrecipes.data.util.LoadingStatus
 import com.groliks.cookingrecipes.databinding.FragmentRecipesListBinding
@@ -97,7 +98,9 @@ abstract class RecipesListFragment : Fragment() {
                         binding.loadingText.isInvisible = true
                         loadingAnimator?.stop()
                         binding.recipesNotFoundText.isVisible = true
-                        Toast.makeText(requireContext(), loadingStatus.message, Toast.LENGTH_SHORT)
+                        val errorMessage =
+                            requireContext().resources.getString(R.string.failed_to_load_recipes)
+                        Toast.makeText(requireContext(), errorMessage, Toast.LENGTH_SHORT)
                             .show()
                     }
                 }

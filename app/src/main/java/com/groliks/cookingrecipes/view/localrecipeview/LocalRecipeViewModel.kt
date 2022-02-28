@@ -41,12 +41,12 @@ class LocalRecipeViewModel(
     fun deleteRecipe() {
         viewModelScope.launch {
             (recipe.value as? LoadingStatus.Success)?.data?.also { recipe ->
-                _deletingRecipeState.emit(LoadingStatus.Loading("Deleting recipe"))
+                _deletingRecipeState.emit(LoadingStatus.Loading())
                 val result = try {
                     recipesRepository.deleteRecipe(recipe.info)
-                    LoadingStatus.Success(Unit, "Recipe deleted")
+                    LoadingStatus.Success(Unit)
                 } catch (e: Exception) {
-                    LoadingStatus.Error("Failed to delete recipe")
+                    LoadingStatus.Error()
                 }
                 _deletingRecipeState.emit(result)
             }

@@ -2,5 +2,5 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item
         android:id="@+id/download_recipe"
-        android:title="@string/download" />
+        android:title="@string/download_recipe" />
 </menu>

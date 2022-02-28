@@ -54,12 +54,25 @@ class LocalRecipeViewFragment : RecipeViewFragment() {
 
         viewLifecycleOwner.lifecycleScope.launchWhenStarted {
             viewModel.deletingRecipeState.collect { deletingStatus ->
-                if (deletingStatus !is LoadingStatus.None) {
-                    Toast.makeText(requireContext(), deletingStatus.message, Toast.LENGTH_SHORT)
-                        .show()
-                }
-                if (deletingStatus is LoadingStatus.Success) {
-                    findNavController().popBackStack(R.id.localRecipeViewFragment, true)
+                when (deletingStatus) {
+                    is LoadingStatus.None -> {}
+                    is LoadingStatus.Loading -> {
+                        val message = requireContext().resources.getString(R.string.deleting_recipe)
+                        Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT)
+                            .show()
+                    }
+                    is LoadingStatus.Success -> {
+                        val message = requireContext().resources.getString(R.string.recipe_deleted)
+                        Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT)
+                            .show()
+                        findNavController().popBackStack(R.id.localRecipeViewFragment, true)
+                    }
+                    is LoadingStatus.Error -> {
+                        val errorMessage =
+                            requireContext().resources.getString(R.string.failed_to_delete_recipe)
+                        Toast.makeText(requireContext(), errorMessage, Toast.LENGTH_SHORT)
+                            .show()
+                    }
                 }
             }
         }

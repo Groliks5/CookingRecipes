@@ -1,5 +1,6 @@
 package com.groliks.cookingrecipes.view.localrecipeslist
 
+import android.content.Context
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
@@ -18,6 +19,9 @@ class LocalRecipesListViewModel(
 ) : RecipesListViewModel(recipesRepository, DataSource.LOCAL) {
     private val _newRecipeId = MutableStateFlow<Long?>(null)
     val newRecipeId = _newRecipeId.asStateFlow()
+
+    private val _deletingRecipeState = MutableStateFlow<LoadingStatus<Unit>>(LoadingStatus.None())
+    val deletingRecipeState = _deletingRecipeState.asStateFlow()
 
     init {
         viewModelScope.launch {
@@ -39,8 +43,14 @@ class LocalRecipesListViewModel(
             (recipesList.value as? LoadingStatus.Success)?.data?.also { recipes ->
                 val recipe = recipes.find { it.id == recipeId }
                 recipe?.also {
-                    recipesRepository.deleteRecipe(it)
-                    updateRecipesList()
+                    _deletingRecipeState.emit(LoadingStatus.Loading(it.name))
+                    val result = try {
+                        recipesRepository.deleteRecipe(it)
+                        LoadingStatus.Success(Unit, it.name)
+                    } catch (e: Exception) {
+                        LoadingStatus.Error(it.name)
+                    }
+                    _deletingRecipeState.emit(result)
                 }
             }
         }
@@ -52,7 +62,10 @@ class LocalRecipesListViewModel(
         }
     }
 
-    class Factory @Inject constructor(private val repository: RecipesRepository) :
+    class Factory @Inject constructor(
+        private val repository: RecipesRepository,
+        private val appContext: Context
+    ) :
         ViewModelProvider.Factory {
         @Suppress("UNCHECKED_CAST")
         override fun <T : ViewModel?> create(modelClass: Class<T>): T {

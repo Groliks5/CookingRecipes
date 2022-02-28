@@ -34,7 +34,7 @@
                 android:layout_width="48dp"
                 android:layout_height="48dp"
                 android:layout_marginTop="8dp"
-                android:contentDescription="@string/favourite_recipe"
+                android:contentDescription="@string/add_to_favourite"
                 app:icon="@drawable/ic_favourite_border_recipe" />
 
             <com.google.android.material.button.MaterialButton

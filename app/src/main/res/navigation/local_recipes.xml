@@ -32,7 +32,8 @@
     </fragment>
     <fragment
         android:id="@+id/localRecipeViewFragment"
-        android:name="com.groliks.cookingrecipes.view.localrecipeview.LocalRecipeViewFragment">
+        android:name="com.groliks.cookingrecipes.view.localrecipeview.LocalRecipeViewFragment"
+        android:label="">
         <action
             android:id="@+id/action_localRecipeViewFragment_to_editRecipeFragment"
             app:destination="@id/editRecipeFragment" />
@@ -45,7 +46,8 @@
     </fragment>
     <fragment
         android:id="@+id/editRecipeFragment"
-        android:name="com.groliks.cookingrecipes.view.editrecipe.EditRecipeFragment">
+        android:name="com.groliks.cookingrecipes.view.editrecipe.EditRecipeFragment"
+        android:label="">
         <argument
             android:name="recipeId"
             app:argType="long" />

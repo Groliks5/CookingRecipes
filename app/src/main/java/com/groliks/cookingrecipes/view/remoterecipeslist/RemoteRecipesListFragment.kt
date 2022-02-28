@@ -8,6 +8,7 @@ import androidx.core.view.isGone
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
+import com.groliks.cookingrecipes.R
 import com.groliks.cookingrecipes.appComponent
 import com.groliks.cookingrecipes.data.recipes.model.RecipeInfo
 import com.groliks.cookingrecipes.data.util.DataSource
@@ -60,13 +61,34 @@ class RemoteRecipesListFragment : RecipesListFragment() {
 
     private fun setupDownloadingRecipeMessage() {
         viewLifecycleOwner.lifecycleScope.launchWhenStarted {
-            viewModel.downloadingRecipeStatus.collect { loadingStatus ->
-                when (loadingStatus) {
+            viewModel.downloadingRecipeStatus.collect { downloadingStatus ->
+                when (downloadingStatus) {
                     is LoadingStatus.None -> {}
-                    else -> {
+                    is LoadingStatus.Loading -> {
+                        val message =
+                            requireContext().resources.getString(R.string.downloading_recipe)
                         Toast.makeText(
-                            requireActivity(),
-                            loadingStatus.message,
+                            requireContext(),
+                            "$message: ${downloadingStatus.message}",
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    }
+                    is LoadingStatus.Success -> {
+                        val message =
+                            requireContext().resources.getString(R.string.recipe_downloaded)
+                        Toast.makeText(
+                            requireContext(),
+                            "$message: ${downloadingStatus.message}",
+                            Toast.LENGTH_SHORT
+                        ).show()
+                        viewModel.updateRecipesList()
+                    }
+                    is LoadingStatus.Error -> {
+                        val errorMessage =
+                            requireContext().resources.getString(R.string.failed_to_download_recipe)
+                        Toast.makeText(
+                            requireContext(),
+                            "$errorMessage: ${downloadingStatus.message}",
                             Toast.LENGTH_SHORT
                         ).show()
                     }
