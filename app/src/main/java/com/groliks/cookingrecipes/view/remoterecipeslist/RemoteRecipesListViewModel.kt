@@ -36,6 +36,7 @@ class RemoteRecipesListViewModel(
                 LoadingStatus.Error(recipeInfo.name)
             }
             _downloadingRecipeStatus.emit(result)
+            _downloadingRecipeStatus.emit(LoadingStatus.None())
         }
     }
 

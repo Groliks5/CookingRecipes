@@ -6,7 +6,7 @@
     <string name="remote_recipes">Remote recipes</string>
     <string name="settings">Settings</string>
     <!-- Recipes list -->
-    <string name="select_filters">Select filters</string>
+    <string name="select_filters">filters</string>
     <string name="failed_to_load_recipes">Failed to load recipes</string>
     <string name="recipes_not_found">Recipes not found</string>
     <string name="delete_filter">Delete filter</string>
@@ -24,13 +24,15 @@
     <!-- Recipe details headers -->
     <string name="ingredients">Ingredients</string>
     <string name="instruction">Instruction</string>
+    <string name="description">Description</string>
     <!-- Recipe view -->
     <string name="ingredient" translatable="false">%1$s%2$s%3$s</string>
+    <string name="recipe_category_view">Category: %1$s</string>
     <!-- Edit recipe -->
-    <string name="recipe_name">Recipe name</string>
+    <string name="recipe_name">Name</string>
     <string name="recipe_photo">Recipe photo</string>
-    <string name="recipe_category">Recipe category</string>
-    <string name="recipe_description">Recipe description</string>
+    <string name="recipe_category">Category</string>
+    <string name="recipe_description">Description</string>
     <string name="add_ingredient">Add ingredient</string>
     <string name="enter_ingredient_name">Name</string>
     <string name="ingredient_separator"> - </string>
@@ -45,6 +47,7 @@
     <string name="enter_uri">Enter uri</string>
     <!-- Photo preview dialog -->
     <string name="photo_preview">Photo preview</string>
+    <string name="failed_to_load_photo">Failed to load photo</string>
     <!-- Delete recipe dialog -->
     <string name="delete_recipe_warning">Are you sure you want to delete recipe: %1$s?</string>
     <!-- Dialog buttons -->
@@ -75,4 +78,11 @@
     <!-- Photo uri -->
     <string name="photo_uri">Photo uri</string>
     <string name="uri_not_found">Uri not found</string>
+    <!-- Settings -->
+    <string name="language">Language:</string>
+    <string name="dark_theme">Dark theme</string>
+    <string-array name="languages">
+        <item name="en">English</item>
+        <item name="ru">Русский</item>
+    </string-array>
 </resources>

@@ -42,29 +42,23 @@ class RemoteRecipeViewFragment : RecipeViewFragment() {
                 when (downloadingStatus) {
                     is LoadingStatus.None -> {}
                     is LoadingStatus.Loading -> {
-                        val message =
-                            requireContext().resources.getString(R.string.downloading_recipe)
                         Toast.makeText(
                             requireContext(),
-                            message,
+                            R.string.downloading_recipe,
                             Toast.LENGTH_SHORT
                         ).show()
                     }
                     is LoadingStatus.Success -> {
-                        val message =
-                            requireContext().resources.getString(R.string.recipe_downloaded)
                         Toast.makeText(
                             requireContext(),
-                            message,
+                            R.string.recipe_downloaded,
                             Toast.LENGTH_SHORT
                         ).show()
                     }
                     is LoadingStatus.Error -> {
-                        val errorMessage =
-                            requireContext().resources.getString(R.string.failed_to_download_recipe)
                         Toast.makeText(
                             requireContext(),
-                            errorMessage,
+                            R.string.failed_to_download_recipe,
                             Toast.LENGTH_SHORT
                         ).show()
                     }

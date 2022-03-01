@@ -74,11 +74,9 @@ class SelectFiltersFragment : Fragment() {
             if (navArgs.dataSource == DataSource.LOCAL || navArgs.selectedFilters.isNotEmpty()) {
                 close()
             } else {
-                val errorMessage =
-                    requireContext().resources.getString(R.string.no_selected_filters_error)
                 Toast.makeText(
                     requireContext(),
-                    errorMessage,
+                    R.string.no_selected_filters_error,
                     Toast.LENGTH_SHORT
                 ).show()
             }
@@ -113,9 +111,11 @@ class SelectFiltersFragment : Fragment() {
                         binding.loadingText.isInvisible = true
                         loadingAnimator?.stop()
                         binding.filters.isVisible = true
-                        val errorMessage =
-                            requireContext().resources.getString(R.string.failed_to_load_filters)
-                        Toast.makeText(requireContext(), errorMessage, Toast.LENGTH_SHORT).show()
+                        Toast.makeText(
+                            requireContext(),
+                            R.string.failed_to_load_filters,
+                            Toast.LENGTH_SHORT
+                        ).show()
                     }
                 }
             }
@@ -124,9 +124,8 @@ class SelectFiltersFragment : Fragment() {
 
     private fun close() {
         if (navArgs.dataSource == DataSource.REMOTE && viewModel.getSelectedFilters().isEmpty()) {
-            val errorMessage =
-                requireContext().resources.getString(R.string.no_selected_filters_error)
-            Toast.makeText(requireContext(), errorMessage, Toast.LENGTH_SHORT).show()
+            Toast.makeText(requireContext(), R.string.no_selected_filters_error, Toast.LENGTH_SHORT)
+                .show()
             return
         }
         findNavController().popBackStack(R.id.selectFiltersFragment, true)

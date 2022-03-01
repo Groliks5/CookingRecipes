@@ -1,5 +1,6 @@
 package com.groliks.cookingrecipes.view.recipeslist
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.groliks.cookingrecipes.data.filters.model.Filter
@@ -34,6 +35,7 @@ abstract class RecipesListViewModel(
             val recipes = recipesRepository.getRecipes(dataSource, filters.value)
             LoadingStatus.Success(recipes)
         } catch (e: Exception) {
+            Log.e("vm", e.toString())
             LoadingStatus.Error()
         }
         _recipesList.emit(result)

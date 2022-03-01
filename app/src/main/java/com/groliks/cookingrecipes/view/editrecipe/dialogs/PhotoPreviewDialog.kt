@@ -5,6 +5,7 @@ import android.app.Dialog
 import android.content.DialogInterface
 import android.os.Bundle
 import android.view.LayoutInflater
+import android.widget.Toast
 import androidx.core.os.bundleOf
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.setFragmentResult
@@ -22,7 +23,19 @@ class PhotoPreviewDialog : DialogFragment(), DialogInterface.OnClickListener {
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         _binding = DialogPhotoPreviewBinding.inflate(LayoutInflater.from(requireContext()))
 
-        binding.photoPreview.load(navArgs.uri)
+        binding.photoPreview.load(navArgs.uri) {
+            error(R.drawable.ic_error_image_loading)
+            listener(
+                onError = { _, _ ->
+                    Toast.makeText(
+                        requireContext(),
+                        R.string.failed_to_load_photo,
+                        Toast.LENGTH_SHORT
+                    ).show()
+                    dismiss()
+                }
+            )
+        }
 
         return AlertDialog.Builder(requireContext())
             .setView(binding.root)

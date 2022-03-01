@@ -23,7 +23,7 @@ import coil.request.ImageRequest
 import com.groliks.cookingrecipes.R
 import com.groliks.cookingrecipes.appComponent
 import com.groliks.cookingrecipes.data.util.LoadingStatus
-import com.groliks.cookingrecipes.databinding.FragmentEditRecipeBinding
+import com.groliks.cookingrecipes.databinding.FragmentRecipeDetailsBinding
 import com.groliks.cookingrecipes.view.editrecipe.dialogs.ExitWithoutSavingDialog
 import com.groliks.cookingrecipes.view.editrecipe.dialogs.PhotoChoosingDialog
 import com.groliks.cookingrecipes.view.editrecipe.dialogs.SavingRecipeDialog
@@ -34,7 +34,7 @@ import javax.inject.Inject
 
 class EditRecipeFragment : Fragment() {
     private val args: EditRecipeFragmentArgs by navArgs()
-    private var _binding: FragmentEditRecipeBinding? = null
+    private var _binding: FragmentRecipeDetailsBinding? = null
     private val binding get() = _binding!!
 
     @Inject
@@ -53,7 +53,7 @@ class EditRecipeFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        _binding = FragmentEditRecipeBinding.inflate(inflater, container, false)
+        _binding = FragmentRecipeDetailsBinding.inflate(inflater, container, false)
 
         setHasOptionsMenu(true)
         requireActivity().onBackPressedDispatcher.addCallback(this) {
@@ -117,10 +117,9 @@ class EditRecipeFragment : Fragment() {
                         findNavController().popBackStack(R.id.editRecipeFragment, false)
                         val messageId =
                             if (savingStatus is LoadingStatus.Success) R.string.recipe_saved else R.string.failed_to_save_recipe
-                        val message = requireContext().resources.getString(messageId)
                         Toast.makeText(
                             requireContext(),
-                            message,
+                            messageId,
                             Toast.LENGTH_SHORT
                         ).show()
                         viewModel.saveResultReceived()
@@ -149,8 +148,8 @@ class EditRecipeFragment : Fragment() {
                     binding.recipeDescription.setText(recipeInfo.description)
                     binding.recipeCategory.setText(recipeInfo.category)
                     binding.recipeInstruction.setText(recipeInfo.instruction)
-                    if (recipeInfo.photoUri.isNotBlank()) {
-                        binding.recipePhoto.load(recipeInfo.photoUri)
+                    binding.recipePhoto.load(recipeInfo.photoUri) {
+                        error(R.drawable.ic_error_image_loading)
                     }
                     (requireActivity() as? AppCompatActivity)?.supportActionBar?.title =
                         recipeInfo.name

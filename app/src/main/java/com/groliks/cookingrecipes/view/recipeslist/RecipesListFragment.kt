@@ -98,9 +98,11 @@ abstract class RecipesListFragment : Fragment() {
                         binding.loadingText.isInvisible = true
                         loadingAnimator?.stop()
                         binding.recipesNotFoundText.isVisible = true
-                        val errorMessage =
-                            requireContext().resources.getString(R.string.failed_to_load_recipes)
-                        Toast.makeText(requireContext(), errorMessage, Toast.LENGTH_SHORT)
+                        Toast.makeText(
+                            requireContext(),
+                            R.string.failed_to_load_recipes,
+                            Toast.LENGTH_SHORT
+                        )
                             .show()
                     }
                 }

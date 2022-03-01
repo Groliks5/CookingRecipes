@@ -7,7 +7,7 @@
     <string name="remote_recipes">Рецепты из сети</string>
     <string name="settings">Настройки</string>
     <!-- Recipes list -->
-    <string name="select_filters">Выбрать фильтры</string>
+    <string name="select_filters">фильтры</string>
     <string name="failed_to_load_recipes">Не удалось загрузить рецепты</string>
     <string name="recipes_not_found">Рецепты не найдены</string>
     <string name="delete_filter">Удалить фильтр</string>
@@ -23,11 +23,14 @@
     <!-- Recipe details headers -->
     <string name="ingredients">Ингредиенты</string>
     <string name="instruction">Инструкция</string>
+    <string name="description">Описание</string>
+    <!-- Recipe view -->
+    <string name="recipe_category_view">Категория: %1$s</string>
     <!-- Edit recipe -->
-    <string name="recipe_name">Название рецепта</string>
+    <string name="recipe_name">Название </string>
     <string name="recipe_photo">Фото рецепта</string>
-    <string name="recipe_category">Категория рецепта</string>
-    <string name="recipe_description">Описание рецепта</string>
+    <string name="recipe_category">Категория</string>
+    <string name="recipe_description">Описание</string>
     <string name="add_ingredient">Добавить ингредиент</string>
     <string name="enter_ingredient_name">Название</string>
     <string name="ingredient_separator"> - </string>
@@ -42,6 +45,7 @@
     <string name="enter_uri">Ввести uri</string>
     <!-- Photo preview dialog -->
     <string name="photo_preview">Предпросмотр фото</string>
+    <string name="failed_to_load_photo">Не удалось загрузить фотографию</string>
     <!-- Delete recipe dialog -->
     <string name="delete_recipe_warning">Вы действительно хотите удалить рецепт: %1$s?</string>
     <!-- Dialog buttons -->
@@ -72,4 +76,7 @@
     <!-- Photo uri -->
     <string name="photo_uri">Uri фотографии</string>
     <string name="uri_not_found">Uri не найден</string>
+    <!-- Settings -->
+    <string name="language">Язык:</string>
+    <string name="dark_theme">Темная тема</string>
 </resources>
