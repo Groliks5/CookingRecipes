@@ -5,6 +5,8 @@ import com.groliks.cookingrecipes.data.recipes.model.Recipe
 import com.groliks.cookingrecipes.data.recipes.model.RecipeInfo
 import com.groliks.cookingrecipes.data.recipes.remotedata.retrofit.RemoteRecipeInfo
 
+private const val REMOTE_RECIPE_DESCRIPTION = "Recipe from the meal DB"
+
 class RemoteRecipeToRecipeConverter {
     companion object {
         fun convertRemoteRecipesInfo(remoteRecipesInfo: List<RemoteRecipeInfo>): List<RecipeInfo> {
@@ -13,7 +15,7 @@ class RemoteRecipeToRecipeConverter {
                 val recipeInfo = RecipeInfo(
                     name = recipe.name,
                     photoUri = recipe.photoUri,
-                    description = "",
+                    description = REMOTE_RECIPE_DESCRIPTION,
                     id = recipe.id
                 )
                 recipes.add(recipeInfo)
@@ -26,7 +28,7 @@ class RemoteRecipeToRecipeConverter {
             val recipeName = remoteRecipe["strMeal"]!!
             val recipeInstruction = remoteRecipe["strInstructions"]!!
             val recipePhotoUri = remoteRecipe["strMealThumb"]!!
-            val recipeDescription = "Recipe from the meal DB"
+            val recipeDescription = REMOTE_RECIPE_DESCRIPTION
             val recipeCategory = remoteRecipe["strCategory"]!!
             val ingredientsNames = getIngredientValues(remoteRecipe, "strIngredient")
             val ingredientsMeasures = getIngredientValues(remoteRecipe, "strMeasure")
